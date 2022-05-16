@@ -1,5 +1,11 @@
 package by.school.diary.domain;
 
+import lombok.experimental.FieldNameConstants;
+
+@FieldNameConstants(onlyExplicitlyIncluded = true)
 public enum Role {
-    ROLE_ADMIN,ROLE_STUDENT,ROLE_TEACHER,ROLE_DIRECTOR
+    @FieldNameConstants.Include ROLE_ADMIN,
+    @FieldNameConstants.Include ROLE_STUDENT,
+    @FieldNameConstants.Include ROLE_TEACHER,
+    @FieldNameConstants.Include ROLE_DIRECTOR
 }

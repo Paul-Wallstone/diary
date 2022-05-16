@@ -1,5 +1,6 @@
 package by.school.diary.config;
 
+import by.school.diary.exception.handler.CustomAuthenticationFailureHandler;
 import by.school.diary.service.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Slf4j
 @Configuration
@@ -34,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    @Override
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
@@ -54,19 +57,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .formLogin()
-                .loginPage("/login")
-                .failureUrl("/login?error=true")
-                .defaultSuccessUrl("/status", true)
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/logged-in-status", true)
+                .failureHandler(authenticationFailureHandler())
+
 
                 .and()
 
                 .logout()
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/logged-out-status")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers("/h2-console/**");
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 }

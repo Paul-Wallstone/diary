@@ -31,20 +31,18 @@ public class DiaryApplication {
 
     @Bean
     public ApplicationRunner dataLoader(UserRepository repo, PasswordEncoder encoder) {
-        return args -> {
-            repo.save(AppUser
-                    .builder()
-                    .firstName("John")
-                    .lastName("Socket")
-                    .username("jsocket")
-                    .password(encoder.encode("123"))
-                    .email("jsocket@example.com")
-                    .verified(true)
-                    .locked(false)
-                    .expired(false)
-                    .role(Role.ROLE_ADMIN)
-                    .build());
-        };
+        return args -> repo.save(AppUser
+                .builder()
+                .firstName("John")
+                .lastName("Socket")
+                .username("jsocket")
+                .password(encoder.encode("123"))
+                .email("jsocket@example.com")
+                .verified(true)
+                .locked(false)
+                .expired(false)
+                .role(Role.ROLE_ADMIN)
+                .build());
     }
 
 }
