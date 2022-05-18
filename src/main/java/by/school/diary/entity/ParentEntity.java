@@ -7,14 +7,15 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "parents")
 @Data
-@Table(name = "diaries")
+@Table
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Diary {
+public class ParentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long studentId;
 }

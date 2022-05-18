@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "diaries")
 @Data
-@Table(name = "groups")
+@Table
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Group {
+public class DiaryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

@@ -61,7 +61,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/logged-in-status", true)
                 .failureHandler(authenticationFailureHandler())
 
-
                 .and()
 
                 .logout()
