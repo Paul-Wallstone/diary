@@ -1,7 +1,7 @@
 package by.school.diary;
 
 import by.school.diary.domain.Role;
-import by.school.diary.entity.AppUser;
+import by.school.diary.entity.UserEntity;
 import by.school.diary.repository.UserRepository;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -31,7 +31,7 @@ public class DiaryApplication {
 
     @Bean
     public ApplicationRunner dataLoader(UserRepository repo, PasswordEncoder encoder) {
-        return args -> repo.save(AppUser
+        return args -> repo.save(UserEntity
                 .builder()
                 .firstName("John")
                 .lastName("Socket")
@@ -39,8 +39,6 @@ public class DiaryApplication {
                 .password(encoder.encode("123"))
                 .email("jsocket@example.com")
                 .verified(true)
-                .locked(false)
-                .expired(false)
                 .role(Role.ROLE_ADMIN)
                 .build());
     }

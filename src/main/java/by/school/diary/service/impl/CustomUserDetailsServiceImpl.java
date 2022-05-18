@@ -1,6 +1,6 @@
-package by.school.diary.service;
+package by.school.diary.service.impl;
 
-import by.school.diary.entity.AppUser;
+import by.school.diary.entity.UserEntity;
 import by.school.diary.exception.UserNotLoggedInException;
 import by.school.diary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UserNotLoggedInException {
-        AppUser applicationUser = Optional.ofNullable(userRepo.findByUsername(username)).orElseThrow(() -> new UserNotLoggedInException(username));
+        UserEntity applicationUser = Optional.ofNullable(userRepo.findByUsername(username)).orElseThrow(() -> new UserNotLoggedInException(username));
         return User.builder()
                 .username(applicationUser.getUsername())
                 .password(applicationUser.getPassword())
