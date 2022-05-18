@@ -1,4 +1,4 @@
-package by.school.diary.service;
+package by.school.diary.service.impl;
 
 import by.school.diary.entity.UserEntity;
 import by.school.diary.exception.UserNotLoggedInException;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepo;
 
