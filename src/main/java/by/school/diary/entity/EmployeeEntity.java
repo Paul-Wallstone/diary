@@ -8,20 +8,20 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity(name = "groups")
+@Entity(name = "employees")
 @Data
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GroupEntity {
+public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(nullable = false, length = 30)
-    private String title;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<SubjectEntity> subjects;
     @OneToOne
-    private EmployeeEntity employee;
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<StudentEntity> students;
+    private PositionEntity position;
+    @OneToOne
+    private UserEntity user;
 }

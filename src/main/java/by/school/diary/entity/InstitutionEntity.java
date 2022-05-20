@@ -6,22 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
-@Entity(name = "groups")
+@Entity(name = "institutions")
 @Data
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GroupEntity {
+public class InstitutionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 125)
     private String title;
     @OneToOne
-    private EmployeeEntity employee;
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<StudentEntity> students;
+    private ContactEntity contact;
 }

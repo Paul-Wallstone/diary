@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "diaries")
 @Data
@@ -17,4 +18,6 @@ public class DiaryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<ScheduleEntity> schedules;
 }
