@@ -13,7 +13,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ErrorResponse {
+    private String title;
     private String message;
     private HttpStatus status;
     private LocalDateTime timestamp;
+    private String stacktrace;
 }

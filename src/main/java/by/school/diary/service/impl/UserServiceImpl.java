@@ -1,33 +1,36 @@
 package by.school.diary.service.impl;
 
-import by.school.diary.dto.UserDto;
+import by.school.diary.dto.ResponseUserDto;
 import by.school.diary.entity.UserEntity;
 import by.school.diary.exception.UserNotFoundException;
 import by.school.diary.repository.UserRepository;
 import by.school.diary.service.UserService;
-import org.modelmapper.ModelMapper;
+import by.school.diary.utils.CustomModelMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    UserRepository userRepository;
-    ModelMapper modelMapper = new ModelMapper();
+    private UserRepository userRepository;
+    @Autowired
+    private CustomModelMapper modelMapper;
 
     @Override
-    public UserDto getUserById(Long id) {
+    public ResponseUserDto getUserById(Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        return modelMapper.map(userEntity, UserDto.class);
+        return modelMapper.toDto(userEntity);
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        Iterable<UserEntity> userEntities = userRepository.findAll();
-        return Stream.of(userEntities).map(user -> modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
+    public List<ResponseUserDto> getAllUsers() {
+        List<UserEntity> userEntities = StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        return userEntities.stream().map(user -> modelMapper.toDto(user)).collect(Collectors.toList());
     }
 }

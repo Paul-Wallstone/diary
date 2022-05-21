@@ -1,10 +1,10 @@
 package by.school.diary.service;
 
-import by.school.diary.dto.UserDto;
+import by.school.diary.dto.ResponseUserDto;
 
 import java.util.List;
 
 public interface UserService {
-    UserDto getUserById(Long id);
-    List<UserDto> getAllUsers();
+    ResponseUserDto getUserById(Long id);
+    List<ResponseUserDto> getAllUsers();
 }

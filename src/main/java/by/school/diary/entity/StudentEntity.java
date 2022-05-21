@@ -27,7 +27,6 @@ public class StudentEntity {
     @ManyToOne
     private GroupEntity group;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "studentId")
     private Set<ParentEntity> parents;
     @OneToOne(cascade = CascadeType.ALL)
     private DiaryEntity diary;
