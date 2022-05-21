@@ -3,6 +3,7 @@ package by.school.diary.controller;
 import by.school.diary.dto.UserDto;
 import by.school.diary.service.UserService;
 import by.school.diary.utils.UserModelAssembler;
+import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -25,7 +26,7 @@ public class UserController {
     private UserModelAssembler assembler;
 
     @GetMapping("{id}")
-    public EntityModel<UserDto> getUserById(@PathVariable @Min(2) Long id) {
+    public EntityModel<UserDto> getUserById(@PathVariable @NotNull Long id) {
         UserDto userDto = userService.getUserById(id);
         return assembler.toModel(userDto);
     }
