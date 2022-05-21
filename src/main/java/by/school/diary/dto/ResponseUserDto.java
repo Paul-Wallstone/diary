@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class UserDto {
+public class ResponseUserDto {
     private Long id;
     @NotBlank(message = "FirstName is mandatory")
     @Size(min = 1, message = "Name must be at least 2 characters long")
@@ -18,5 +18,4 @@ public class UserDto {
     @NotBlank(message = "Email is mandatory")
     @Email
     private String email;
-    private String password;
 }

@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ScheduleEntity {
+public class LessonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

@@ -24,4 +24,6 @@ public class EmployeeEntity {
     private PositionEntity position;
     @OneToOne
     private UserEntity user;
+    @OneToOne
+    private ContactEntity contact;
 }

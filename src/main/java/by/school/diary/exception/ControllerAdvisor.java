@@ -8,12 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-
 import javax.validation.ConstraintViolationException;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -45,8 +40,9 @@ public class ControllerAdvisor {
                 .build();
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException constraintViolationException) {
         return ErrorResponse.builder()
                 .message(constraintViolationException.getMessage())

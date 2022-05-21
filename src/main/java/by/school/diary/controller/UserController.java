@@ -1,6 +1,6 @@
 package by.school.diary.controller;
 
-import by.school.diary.dto.UserDto;
+import by.school.diary.dto.ResponseUserDto;
 import by.school.diary.service.UserService;
 import by.school.diary.utils.UserModelAssembler;
 import com.sun.istack.NotNull;
@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @Validated
@@ -26,19 +25,19 @@ public class UserController {
     private UserModelAssembler assembler;
 
     @GetMapping("{id}")
-    public EntityModel<UserDto> getUserById(@PathVariable @NotNull Long id) {
-        UserDto userDto = userService.getUserById(id);
+    public EntityModel<ResponseUserDto> getUserById(@PathVariable @NotNull Long id) {
+        ResponseUserDto userDto = userService.getUserById(id);
         return assembler.toModel(userDto);
     }
 
     @GetMapping
-    public CollectionModel<EntityModel<UserDto>> getAllUsers() {
-        List<UserDto> allUsers = userService.getAllUsers();
+    public CollectionModel<EntityModel<ResponseUserDto>> getAllUsers() {
+        List<ResponseUserDto> allUsers = userService.getAllUsers();
         return assembler.toCollectionModel(allUsers);
     }
 
     @PostMapping
-    public EntityModel<UserDto> saveUser(@Valid @RequestBody UserDto userDto) {
+    public EntityModel<ResponseUserDto> saveUser(@Valid @RequestBody ResponseUserDto userDto) {
 
         return assembler.toModel(userDto);
     }

@@ -15,7 +15,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 public class UserEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
