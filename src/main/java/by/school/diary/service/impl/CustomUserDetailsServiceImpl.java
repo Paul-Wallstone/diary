@@ -18,9 +18,9 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UserNotLoggedInException {
-        UserEntity applicationUser = Optional.ofNullable(userRepo.findByUsername(username)).orElseThrow(() -> new UserNotLoggedInException(username));
+        UserEntity applicationUser = Optional.ofNullable(userRepo.findByUserName(username)).orElseThrow(() -> new UserNotLoggedInException(username));
         return User.builder()
-                .username(applicationUser.getUsername())
+                .username(applicationUser.getUserName())
                 .password(applicationUser.getPassword())
                 .disabled(!applicationUser.isVerified())
                 .accountExpired(applicationUser.isExpired())

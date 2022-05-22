@@ -35,7 +35,7 @@ public class DiaryApplication {
                 .builder()
                 .firstName("John")
                 .lastName("Socket")
-                .username("jsocket")
+                .userName("jsocket")
                 .password(encoder.encode("123"))
                 .email("jsocket@example.com")
                 .verified(true)

@@ -28,6 +28,6 @@ public class LessonEntity {
     private SubjectEntity subject;
     @OneToOne
     private EmployeeEntity employee;
-    @ManyToMany(mappedBy = "schedules")
+    @ManyToMany(mappedBy = "lessons")
     private Set<DiaryEntity> diaries;
 }
