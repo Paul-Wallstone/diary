@@ -17,8 +17,10 @@ public class InstitutionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(nullable = false, length = 125)
     private String title;
+
     @OneToOne
     private ContactEntity contact;
 }

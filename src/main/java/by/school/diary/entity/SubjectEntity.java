@@ -18,8 +18,10 @@ public class SubjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @ManyToMany(mappedBy = "subjects")
     private Set<EmployeeEntity> employees;
+
     @Column(nullable = false, length = 125)
     private String title;
 }

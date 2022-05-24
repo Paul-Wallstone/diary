@@ -1,12 +1,14 @@
 package by.school.diary.entity;
 
 import by.school.diary.domain.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity(name = "users")
 @Table()
@@ -39,7 +41,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 70, unique = true)
+    @Column(length = 70, unique = true, nullable = true)
     @Email
     private String email;
 
@@ -53,4 +55,13 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 35)
     private Role role;
+
+    @JsonFormat(pattern = "yyyy-mm-dd HH:mm:ss")
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdDate;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
 }

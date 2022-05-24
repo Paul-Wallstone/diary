@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
-@Entity(name = "schedules")
+@Entity(name = "lessons")
 @Data
 @Table
 @AllArgsConstructor
@@ -20,14 +20,21 @@ public class LessonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(nullable = false)
     private Date date;
+
     private Mark mark;
+
+    @Column(columnDefinition = "text")
     private String message;
+
     @OneToOne
     private SubjectEntity subject;
+
     @OneToOne
     private EmployeeEntity employee;
+
     @ManyToMany(mappedBy = "lessons")
     private Set<DiaryEntity> diaries;
 }

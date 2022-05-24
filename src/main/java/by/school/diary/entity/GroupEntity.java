@@ -18,10 +18,13 @@ public class GroupEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(nullable = false, length = 30)
     private String title;
+
     @OneToOne
     private EmployeeEntity employee;
+
     @OneToMany(cascade = CascadeType.ALL)
     private Set<StudentEntity> students;
 }
