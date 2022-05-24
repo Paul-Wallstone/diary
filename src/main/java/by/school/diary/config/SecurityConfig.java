@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private CustomUserDetailsServiceImpl customUserDetailsService;
+    private final CustomUserDetailsServiceImpl customUserDetailsService;
 
     @Autowired
     public SecurityConfig(CustomUserDetailsServiceImpl customUserDetailsService) {

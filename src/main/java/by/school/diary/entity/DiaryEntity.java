@@ -19,5 +19,5 @@ public class DiaryEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToMany(cascade = CascadeType.ALL)
-    private Set<LessonEntity> schedules;
+    private Set<LessonEntity> lessons;
 }

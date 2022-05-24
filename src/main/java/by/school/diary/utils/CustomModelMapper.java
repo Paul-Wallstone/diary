@@ -15,12 +15,16 @@ public class CustomModelMapper {
     @Autowired
     private ModelMapper mapper;
 
-    public Optional<UserEntity> toEntity(RequestUserDto dto) {
-        return Optional.ofNullable(dto).isPresent() ? Optional.of(mapper.map(dto, UserEntity.class)) : Optional.empty();
+    public UserEntity toEntity(RequestUserDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, UserEntity.class) : null;
     }
 
-    public Optional<UserEntity> toEntity(ResponseUserDto dto) {
-        return Optional.ofNullable(dto).isPresent() ? Optional.of(mapper.map(dto, UserEntity.class)) : Optional.empty();
+    public UserEntity toEntity(ResponseUserDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, UserEntity.class) : null;
+    }
+
+    public RequestUserDto toDto(ResponseUserDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, RequestUserDto.class) : null;
     }
 
     public ResponseUserDto toDto(UserEntity entity) {
