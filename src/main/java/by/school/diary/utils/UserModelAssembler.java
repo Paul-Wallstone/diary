@@ -3,10 +3,10 @@ package by.school.diary.utils;
 
 import by.school.diary.controller.UserController;
 import by.school.diary.dto.ResponseUserDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,11 +18,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class UserModelAssembler implements RepresentationModelAssembler<ResponseUserDto, EntityModel<ResponseUserDto>> {
-    @Autowired
-    CustomModelMapper modelMapper;
+    private final CustomModelMapper modelMapper;
 
+    public UserModelAssembler(CustomModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
+    @NonNull
     @Override
-    public EntityModel<ResponseUserDto> toModel(ResponseUserDto user) {
+    public EntityModel<ResponseUserDto> toModel(@NonNull ResponseUserDto user) {
 
         return EntityModel.of(user,
                 linkTo(methodOn(UserController.class).getById(user.getId())).withRel("user"),
@@ -32,6 +36,7 @@ public class UserModelAssembler implements RepresentationModelAssembler<Response
                 linkTo(methodOn(UserController.class).update(user.getId(), modelMapper.toDto(user))).withRel("update"));
     }
 
+    @NonNull
     @Override
     public CollectionModel<EntityModel<ResponseUserDto>> toCollectionModel(Iterable<? extends ResponseUserDto> users) {
         List<ResponseUserDto> userDtos = StreamSupport.stream(users.spliterator(), false)

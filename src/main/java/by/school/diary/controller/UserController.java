@@ -4,10 +4,8 @@ import by.school.diary.dto.RequestUserDto;
 import by.school.diary.dto.ResponseUserDto;
 import by.school.diary.service.UserService;
 import by.school.diary.utils.UserModelAssembler;
-import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Validated
@@ -23,10 +23,15 @@ import java.util.List;
 @RequestMapping(produces = "application/json", path = "/v1")
 @Tag(name = "User Controller", description = "This REST controller provides user services in the Diary application")
 public class UserController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserModelAssembler assembler;
+
+    private final UserService userService;
+
+    private final UserModelAssembler assembler;
+
+    public UserController(UserService userService, UserModelAssembler assembler) {
+        this.userService = userService;
+        this.assembler = assembler;
+    }
 
     @GetMapping("/users/{id}")
     @ResponseStatus(code = HttpStatus.OK)
@@ -54,7 +59,7 @@ public class UserController {
 
     @DeleteMapping("/users/{id}/delete")
     @Operation(summary = "Delete user with id from the Diary application")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<ResponseUserDto>> deleteById(@PathVariable @NotBlank Long id) {
         userService.deleteById(id);
         return ResponseEntity.ok(assembler.toModel(new ResponseUserDto()));
     }

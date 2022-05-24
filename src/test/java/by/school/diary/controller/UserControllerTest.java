@@ -56,7 +56,7 @@ class UserControllerTest {
         EntityModel<ResponseUserDto> model = EntityModel.of(dto,
                 linkTo(methodOn(UserController.class).getById(dto.getId())).withSelfRel(),
                 linkTo(methodOn(UserController.class).getAll()).withRel("users"));
-        when(userService.getById(1l)).thenReturn(dto);
+        when(userService.getById(1L)).thenReturn(dto);
         when(assembler.toModel(dto)).thenReturn(model);
         EntityModel<ResponseUserDto> actual = userController.getById(1L);
         assertEquals(actual, model);
@@ -64,7 +64,7 @@ class UserControllerTest {
 
     @Test
     void getUserByIdIntegrationTest() throws Exception {
-        Long id = 1l;
+        Long id = 1L;
         mockMvc.perform(get("/users/{id}", id))
                 .andDo(print())
                 .andExpect(jsonPath("$.*", hasSize(5)))
@@ -76,7 +76,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void getUserByIdIntegrationInvalidTest() throws Exception {
+    void getUserByIdIntegrationInvalidTest() throws Exception {
         mockMvc.perform(get("/users/{id}", 100))
                 .andDo(print())
                 .andExpect(status().isNotFound());
