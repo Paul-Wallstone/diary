@@ -1,8 +1,9 @@
 package by.school.diary.service.impl;
 
 import by.school.diary.domain.Role;
-import by.school.diary.dto.RequestUserDto;
-import by.school.diary.dto.ResponseUserDto;
+import by.school.diary.dto.request.RequestUserDto;
+import by.school.diary.dto.request.SignUpRequestDto;
+import by.school.diary.dto.response.UserResponseDto;
 import by.school.diary.entity.UserEntity;
 import by.school.diary.exception.UserNotFoundException;
 import by.school.diary.repository.UserRepository;
@@ -28,33 +29,33 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder encoder;
 
     @Override
-    public ResponseUserDto getById(Long id) {
+    public UserResponseDto getById(Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return modelMapper.toDto(userEntity);
     }
 
     @Override
-    public List<ResponseUserDto> getAll() {
+    public List<UserResponseDto> getAll() {
         List<UserEntity> userEntities = StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
         return userEntities.stream().map(user -> modelMapper.toDto(user)).collect(Collectors.toList());
     }
 
     @Override
-    public ResponseUserDto save(RequestUserDto userDto) {
+    public UserResponseDto save(RequestUserDto userDto) {
         UserEntity user = modelMapper.toEntity(userDto);
-        user.setRole(Role.ROLE_GUEST);
+        user.getRoles().add(Role.ROLE_USER);
         user.setPassword(encoder.encode(userDto.getPassword()));
         UserEntity savedUser = userRepository.save(user);
         return modelMapper.toDto(savedUser);
     }
 
     @Override
-    public ResponseUserDto update(RequestUserDto userDto, Long id) {
+    public UserResponseDto update(RequestUserDto userDto, Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userEntity.setPassword(encoder.encode(userDto.getPassword()));
-        userEntity.setUserName(userDto.getUserName());
-        userEntity.setFirstName(userDto.getFirstName());
-        userEntity.setLastName(userDto.getLastName());
+        userEntity.setUsername(userDto.getUsername());
+        userEntity.setFirstName(userDto.getFirstname());
+        userEntity.setLastName(userDto.getLastname());
         userEntity.setEmail(userDto.getEmail());
         UserEntity updatedUser = userRepository.save(userEntity);
         return modelMapper.toDto(updatedUser);
@@ -67,5 +68,13 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new UserNotFoundException(id);
         }
+    }
+
+    @Override
+    public void registerUser(SignUpRequestDto signUpRequestDto) {
+        UserEntity user = modelMapper.toEntity(signUpRequestDto);
+        user.getRoles().add(Role.ROLE_USER);
+        user.setPassword(encoder.encode(signUpRequestDto.getPassword()));
+        userRepository.save(user);
     }
 }

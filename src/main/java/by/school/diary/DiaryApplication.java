@@ -29,18 +29,18 @@ public class DiaryApplication {
                 .license(new License().name("Open API 1.0").url("http://springdoc.org")));
     }
 
-    @Bean
-    public ApplicationRunner dataLoader(UserRepository repo, PasswordEncoder encoder) {
-        return args -> repo.save(UserEntity
-                .builder()
-                .firstName("John")
-                .lastName("Socket")
-                .userName("jsocket")
-                .password(encoder.encode("123"))
-                .email("jsocket@example.com")
-                .verified(true)
-                .role(Role.ROLE_ADMIN)
-                .build());
-    }
+//    @Bean
+//    public ApplicationRunner dataLoader(UserRepository repo, PasswordEncoder encoder) {
+//        return args -> repo.save(UserEntity
+//                .builder()
+//                .firstName("John")
+//                .lastName("Socket")
+//                .username("jsocket")
+//                .password(encoder.encode("123"))
+//                .email("jsocket@example.com")
+//                .verified(true)
+//                .role(Role.ROLE_ADMIN)
+//                .build());
+//    }
 
 }

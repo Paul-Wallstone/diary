@@ -1,4 +1,4 @@
-package by.school.diary.domain;
+package by.school.diary.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ErrorResponse {
+public class ErrorResponseDto {
     private String title;
     private String message;
     private HttpStatus status;
-    private LocalDateTime timestamp;
+    private String timestamp;
     private String stacktrace;
 }
