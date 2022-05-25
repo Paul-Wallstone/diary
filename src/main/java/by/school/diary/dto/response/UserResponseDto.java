@@ -1,4 +1,4 @@
-package by.school.diary.dto;
+package by.school.diary.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseUserDto {
+public class UserResponseDto {
     private Long id;
     @NotBlank(message = "FirstName is mandatory")
     @Size(min = 2, message = "Name must be at least 2 characters long")
@@ -21,5 +21,5 @@ public class ResponseUserDto {
     @Size(min = 2, message = "Name must be at least 2 characters long")
     private String lastName;
     @Size(min = 2, message = "Username must be at least 2 characters long")
-    private String userName;
+    private String username;
 }

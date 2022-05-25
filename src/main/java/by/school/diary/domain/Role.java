@@ -9,6 +9,6 @@ public enum Role {
     @FieldNameConstants.Include ROLE_TEACHER,
     @FieldNameConstants.Include ROLE_DIRECTOR,
     @FieldNameConstants.Include ROLE_PARENT,
-    @FieldNameConstants.Include ROLE_GUEST
+    @FieldNameConstants.Include ROLE_USER
 
 }

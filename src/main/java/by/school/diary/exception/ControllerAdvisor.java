@@ -1,6 +1,6 @@
 package by.school.diary.exception;
 
-import by.school.diary.domain.ErrorResponse;
+import by.school.diary.dto.response.ErrorResponseDto;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
+
+import java.util.Map;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -19,35 +21,47 @@ public class ControllerAdvisor {
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
-    public ErrorResponse handleUserNotFoundException(UserNotFoundException userNotFoundException) {
-        return ErrorResponse.builder()
+    public ErrorResponseDto handleUserNotFoundException(UserNotFoundException userNotFoundException) {
+        return ErrorResponseDto.builder()
                 .title("Resource Not Found")
                 .message(userNotFoundException.getMessage())
                 .status(NOT_FOUND)
-                .timestamp(now())
+                .timestamp(now().toString())
                 .stacktrace(ExceptionUtils.getStackTrace(userNotFoundException))
                 .build();
     }
 
     @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(ValidationCustomException.class)
+    public ErrorResponseDto handleValidationCustomException(ValidationCustomException validationCustomException) {
+        return ErrorResponseDto.builder()
+                .title("Request Object Is Not Valid")
+                .message(validationCustomException.getMessage())
+                .status(BAD_REQUEST)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(validationCustomException))
+                .build();
+    }
+
+    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ErrorResponse handleValidationExceptions(
+    public ErrorResponseDto handleValidationExceptions(
             MethodArgumentNotValidException methodArgumentNotValidException) {
-        return ErrorResponse.builder()
+        return ErrorResponseDto.builder()
                 .message(methodArgumentNotValidException.getMessage())
                 .status(BAD_REQUEST)
-                .timestamp(now())
+                .timestamp(now().toString())
                 .build();
     }
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ErrorResponse handleConstraintViolationException(ConstraintViolationException constraintViolationException) {
-        return ErrorResponse.builder()
+    public ErrorResponseDto handleConstraintViolationException(ConstraintViolationException constraintViolationException) {
+        return ErrorResponseDto.builder()
                 .message(constraintViolationException.getMessage())
                 .status(BAD_REQUEST)
-                .timestamp(now())
+                .timestamp(now().toString())
                 .build();
     }
 

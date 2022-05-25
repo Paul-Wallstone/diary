@@ -1,4 +1,4 @@
-package by.school.diary.config;
+package by.school.diary.security;
 
 import by.school.diary.exception.handler.CustomAuthenticationFailureHandler;
 import by.school.diary.service.impl.CustomUserDetailsServiceImpl;
@@ -6,29 +6,39 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true,
+        proxyTargetClass = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsServiceImpl customUserDetailsService;
+    private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsServiceImpl customUserDetailsService) {
+    public SecurityConfig(CustomUserDetailsServiceImpl customUserDetailsService, JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.customUserDetailsService = customUserDetailsService;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -48,31 +58,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().disable().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
-                .antMatchers("/").access("hasRole('DIRECTOR') ||hasRole('ADMIN') ")
-                .antMatchers("/**").access("permitAll()")
-                .anyRequest().authenticated()
+                .antMatchers("/api-docs/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers(SecurityConstants.SIGN_UP_URLS).permitAll()
+                .antMatchers("/v1/**").hasAnyRole("ADMIN", "USER", "STUDENT", "DIRECTOR", "PARENT", "TEACHER")
+                .anyRequest().authenticated();
 
-                .and()
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-                .formLogin()
-                .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/logged-in-status", true)
-                .failureHandler(authenticationFailureHandler())
+    }
 
-                .and()
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-                .logout()
-                .logoutSuccessUrl("/logged-out-status")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID");
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter() {
+        return new JWTAuthenticationFilter();
     }
 
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/h2-console/**");
+                .antMatchers("/h2-console/**")
+                .antMatchers("/swagger-ui/**")
+                .antMatchers("/swagger-ui.**");
     }
 
     @Bean

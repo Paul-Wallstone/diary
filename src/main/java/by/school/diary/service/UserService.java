@@ -1,18 +1,21 @@
 package by.school.diary.service;
 
-import by.school.diary.dto.RequestUserDto;
-import by.school.diary.dto.ResponseUserDto;
+import by.school.diary.dto.request.RequestUserDto;
+import by.school.diary.dto.request.SignUpRequestDto;
+import by.school.diary.dto.response.UserResponseDto;
 
 import java.util.List;
 
 public interface UserService {
-    ResponseUserDto getById(Long id);
+    UserResponseDto getById(Long id);
 
-    List<ResponseUserDto> getAll();
+    List<UserResponseDto> getAll();
 
-    ResponseUserDto save(RequestUserDto userDto);
+    UserResponseDto save(RequestUserDto userDto);
 
-    ResponseUserDto update(RequestUserDto userDto,Long id);
+    UserResponseDto update(RequestUserDto userDto, Long id);
 
     void deleteById(Long id);
+
+    void registerUser(SignUpRequestDto signUpRequestDto);
 }
