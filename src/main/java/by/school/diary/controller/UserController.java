@@ -1,7 +1,7 @@
 package by.school.diary.controller;
 
 import by.school.diary.domain.Role;
-import by.school.diary.dto.request.RequestUserDto;
+import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.response.UserResponseDto;
 import by.school.diary.service.UserService;
 import by.school.diary.utils.UserModelAssembler;
@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.security.Principal;
 import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping(produces = "application/json", path = "/v1")
+@RequestMapping(produces = "application/json", path = "/v1/users")
 @Tag(name = "User Controller", description = "This REST controller provides user services in the Diary application")
 public class UserController {
 
@@ -35,7 +36,7 @@ public class UserController {
         this.assembler = assembler;
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
     @PreAuthorize("hasAnyRole('" + Role.Fields.ROLE_USER + "')")
     @Operation(summary = "Provides user details with id from the Diary application")
@@ -44,7 +45,7 @@ public class UserController {
         return assembler.toModel(userDto);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/")
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Provides all users available in the Diary application")
     public CollectionModel<EntityModel<UserResponseDto>> getAll() {
@@ -52,26 +53,33 @@ public class UserController {
         return assembler.toCollectionModel(allUsers);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/")
     @ResponseStatus(code = HttpStatus.CREATED)
     @Operation(summary = "Creates a new user in the Diary application")
-    public EntityModel<UserResponseDto> save(@Valid @RequestBody RequestUserDto userDto) {
+    public EntityModel<UserResponseDto> save(@Valid @RequestBody UserRequestDto userDto) {
         UserResponseDto user = userService.save(userDto);
         return assembler.toModel(user);
     }
 
-    @DeleteMapping("/users/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     @Operation(summary = "Delete user with id from the Diary application")
     public ResponseEntity<EntityModel<UserResponseDto>> deleteById(@PathVariable @NotBlank Long id) {
         userService.deleteById(id);
         return ResponseEntity.ok(assembler.toModel(new UserResponseDto()));
     }
 
-    @PutMapping("/users/{id}/update")
+    @PutMapping("/{id}/update")
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Update user with id from the Diary application")
-    public EntityModel<UserResponseDto> update(@PathVariable() Long id, @Valid @RequestBody RequestUserDto userDto) {
+    public EntityModel<UserResponseDto> update(@PathVariable() Long id, @Valid @RequestBody UserRequestDto userDto) {
         UserResponseDto user = userService.update(userDto, id);
+        return assembler.toModel(user);
+    }
+
+    @GetMapping("/current")
+    @ResponseStatus(code = HttpStatus.OK)
+    public EntityModel<UserResponseDto> getCurrentUser(Principal principal) {
+        UserResponseDto user = userService.getCurrentUser(principal);
         return assembler.toModel(user);
     }
 }

@@ -1,9 +1,11 @@
 package by.school.diary.service;
 
-import by.school.diary.dto.request.RequestUserDto;
+import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.request.SignUpRequestDto;
 import by.school.diary.dto.response.UserResponseDto;
+import by.school.diary.entity.UserEntity;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -11,11 +13,15 @@ public interface UserService {
 
     List<UserResponseDto> getAll();
 
-    UserResponseDto save(RequestUserDto userDto);
+    UserResponseDto save(UserRequestDto userDto);
 
-    UserResponseDto update(RequestUserDto userDto, Long id);
+    UserResponseDto update(UserRequestDto userDto, Long id);
 
     void deleteById(Long id);
 
     void registerUser(SignUpRequestDto signUpRequestDto);
+
+    UserEntity updateUserByPrincipal(UserRequestDto userRequestDto, Principal principal);
+
+    UserResponseDto getCurrentUser(Principal principal);
 }

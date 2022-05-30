@@ -3,6 +3,7 @@ package by.school.diary.exception;
 import by.school.diary.dto.response.ErrorResponseDto;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -28,6 +29,30 @@ public class ControllerAdvisor {
                 .status(NOT_FOUND)
                 .timestamp(now().toString())
                 .stacktrace(ExceptionUtils.getStackTrace(userNotFoundException))
+                .build();
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(UserExistException.class)
+    public ErrorResponseDto handleUserExistException(UserExistException userExistException) {
+        return ErrorResponseDto.builder()
+                .title("User Already Exist")
+                .message(userExistException.getMessage())
+                .status(BAD_REQUEST)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(userExistException))
+                .build();
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ErrorResponseDto handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException) {
+        return ErrorResponseDto.builder()
+                .title("Username Not Found")
+                .message(usernameNotFoundException.getMessage())
+                .status(BAD_REQUEST)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(usernameNotFoundException))
                 .build();
     }
 

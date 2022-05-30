@@ -1,6 +1,6 @@
 package by.school.diary.utils;
 
-import by.school.diary.dto.request.RequestUserDto;
+import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.request.SignUpRequestDto;
 import by.school.diary.dto.response.UserResponseDto;
 import by.school.diary.entity.UserEntity;
@@ -16,7 +16,7 @@ public class CustomModelMapper {
     @Autowired
     private ModelMapper mapper;
 
-    public UserEntity toEntity(RequestUserDto dto) {
+    public UserEntity toEntity(UserRequestDto dto) {
         return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, UserEntity.class) : null;
     }
 
@@ -28,8 +28,8 @@ public class CustomModelMapper {
         return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, UserEntity.class) : null;
     }
 
-    public RequestUserDto toDto(UserResponseDto dto) {
-        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, RequestUserDto.class) : null;
+    public UserRequestDto toDto(UserResponseDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, UserRequestDto.class) : null;
     }
 
     public UserResponseDto toDto(UserEntity entity) {

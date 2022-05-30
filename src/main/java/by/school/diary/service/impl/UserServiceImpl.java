@@ -1,19 +1,22 @@
 package by.school.diary.service.impl;
 
 import by.school.diary.domain.Role;
-import by.school.diary.dto.request.RequestUserDto;
+import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.request.SignUpRequestDto;
 import by.school.diary.dto.response.UserResponseDto;
 import by.school.diary.entity.UserEntity;
+import by.school.diary.exception.UserExistException;
 import by.school.diary.exception.UserNotFoundException;
 import by.school.diary.repository.UserRepository;
 import by.school.diary.service.UserService;
 import by.school.diary.utils.CustomModelMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -41,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto save(RequestUserDto userDto) {
+    public UserResponseDto save(UserRequestDto userDto) {
         UserEntity user = modelMapper.toEntity(userDto);
         user.getRoles().add(Role.ROLE_USER);
         user.setPassword(encoder.encode(userDto.getPassword()));
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto update(RequestUserDto userDto, Long id) {
+    public UserResponseDto update(UserRequestDto userDto, Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userEntity.setPassword(encoder.encode(userDto.getPassword()));
         userEntity.setUsername(userDto.getUsername());
@@ -75,6 +78,35 @@ public class UserServiceImpl implements UserService {
         UserEntity user = modelMapper.toEntity(signUpRequestDto);
         user.getRoles().add(Role.ROLE_USER);
         user.setPassword(encoder.encode(signUpRequestDto.getPassword()));
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new UserExistException("The user " + user.getUsername() + " already exist. Please check credentials");
+        }
+    }
+
+    @Override
+    public UserEntity updateUserByPrincipal(UserRequestDto userRequestDto, Principal principal) {
+        UserEntity userEntity = getUserByPrincipal(principal);
+        userEntity.setFirstName(userRequestDto.getFirstname());
+        userEntity.setLastName(userRequestDto.getLastname());
+        userEntity.setEmail(userRequestDto.getEmail());
+        userEntity.setUsername(userRequestDto.getUsername());
+
+        return userRepository.save(userEntity);
+    }
+
+    @Override
+    public UserResponseDto getCurrentUser(Principal principal) {
+        return modelMapper.toDto(getUserByPrincipal(principal));
+    }
+
+    private UserEntity getUserByPrincipal(Principal principal) {
+        String username = principal.getName();
+        try {
+            return userRepository.findByUsername(username);
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("User not found with username" + username);
+        }
     }
 }

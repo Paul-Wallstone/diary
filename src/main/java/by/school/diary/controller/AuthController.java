@@ -3,7 +3,6 @@ package by.school.diary.controller;
 import by.school.diary.dto.response.JWTTokenResponseDto;
 import by.school.diary.dto.request.LoginRequestDto;
 import by.school.diary.dto.request.SignUpRequestDto;
-import by.school.diary.exception.UserNotFoundException;
 import by.school.diary.exception.ValidationCustomException;
 import by.school.diary.security.JWTTokenProvider;
 import by.school.diary.security.SecurityConstants;
@@ -14,7 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +23,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +33,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path = "/auth", produces = "application/json")
+
+@RequestMapping(path = "/v1/auth", produces = "application/json")
 @PreAuthorize("permitAll()")
 @Tag(name = "Authentication Controller", description = "This REST controller provides secure services in the Diary application")
 public class AuthController {
