@@ -27,7 +27,7 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "LastName is mandatory")
+    @NotBlank(message = "FirstName is mandatory")
     @Size(min = 2, message = "Name must be at least 2 characters long")
     @Column(nullable = false, length = 50)
     private String firstName;
@@ -37,7 +37,7 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false, length = 50)
     private String lastName;
 
-    @NotBlank(message = "LastName is mandatory")
+    @NotBlank(message = "UserName is mandatory")
     @Size(min = 2, message = "Name must be at least 2 characters long")
     @Column(nullable = false, length = 50, unique = true)
     private String username;
