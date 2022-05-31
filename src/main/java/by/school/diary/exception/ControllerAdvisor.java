@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
 
-import java.util.Map;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -19,18 +18,44 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
 public class ControllerAdvisor {
+    public static final String OBJECT_NOT_FOUND = "Resource Not Found";
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public ErrorResponseDto handleUserNotFoundException(UserNotFoundException userNotFoundException) {
         return ErrorResponseDto.builder()
-                .title("Resource Not Found")
+                .title(OBJECT_NOT_FOUND)
                 .message(userNotFoundException.getMessage())
                 .status(NOT_FOUND)
                 .timestamp(now().toString())
                 .stacktrace(ExceptionUtils.getStackTrace(userNotFoundException))
                 .build();
     }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(IdIsNullException.class)
+    public ErrorResponseDto handleIdIsNullException(IdIsNullException idIsNullException) {
+        return ErrorResponseDto.builder()
+                .title(OBJECT_NOT_FOUND)
+                .message(idIsNullException.getMessage())
+                .status(NOT_FOUND)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(idIsNullException))
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(LessonNotFoundException.class)
+    public ErrorResponseDto handleLessonNotFoundException(LessonNotFoundException lessonNotFoundException) {
+        return ErrorResponseDto.builder()
+                .title(OBJECT_NOT_FOUND)
+                .message(lessonNotFoundException.getMessage())
+                .status(NOT_FOUND)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(lessonNotFoundException))
+                .build();
+    }
+
 
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(UserExistException.class)

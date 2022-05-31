@@ -1,11 +1,9 @@
 package by.school.diary.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity(name = "institutions")
 @Data
@@ -13,14 +11,20 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InstitutionEntity {
+@EqualsAndHashCode(exclude = {"contact"})
+public class InstitutionEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 125)
     private String title;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contact_id")
+    @ToString.Exclude
     private ContactEntity contact;
 }
