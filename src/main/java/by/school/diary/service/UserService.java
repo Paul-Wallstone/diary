@@ -1,6 +1,6 @@
 package by.school.diary.service;
 
-import by.school.diary.dto.request.RequestUserDto;
+import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.request.SignUpRequestDto;
 import by.school.diary.dto.response.UserResponseDto;
 
@@ -11,9 +11,9 @@ public interface UserService {
 
     List<UserResponseDto> getAll();
 
-    UserResponseDto save(RequestUserDto userDto);
+    UserResponseDto save(UserRequestDto userDto);
 
-    UserResponseDto update(RequestUserDto userDto, Long id);
+    UserResponseDto update(UserRequestDto userDto, Long id);
 
     void deleteById(Long id);
 

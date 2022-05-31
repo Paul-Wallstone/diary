@@ -28,17 +28,17 @@ public class UserEntity implements UserDetails {
     private Long id;
 
     @NotBlank(message = "FirstName is mandatory")
-    @Size(min = 2, message = "Name must be at least 2 characters long")
+    @Size(min = 2, message = "FirstName must be at least 2 characters long")
     @Column(nullable = false, length = 50)
     private String firstName;
 
     @NotBlank(message = "LastName is mandatory")
-    @Size(min = 2, message = "Name must be at least 2 characters long")
+    @Size(min = 2, message = "LastName must be at least 2 characters long")
     @Column(nullable = false, length = 50)
     private String lastName;
 
     @NotBlank(message = "UserName is mandatory")
-    @Size(min = 2, message = "Name must be at least 2 characters long")
+    @Size(min = 2, message = "UserName must be at least 2 characters long")
     @Column(nullable = false, length = 50, unique = true)
     private String username;
 

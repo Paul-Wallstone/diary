@@ -1,15 +1,16 @@
 package by.school.diary.service;
 
-import by.school.diary.entity.ContactEntity;
+import by.school.diary.dto.request.ContactRequestDto;
+import by.school.diary.dto.response.ContactResponseDto;
 
 public interface ContactService {
-	ContactEntity getById(Long id);
+	ContactResponseDto getById(Long id);
 
-	ContactEntity save(ContactEntity contactEntity);
+	ContactResponseDto save(ContactRequestDto contactDto);
 
-	ContactEntity update(ContactEntity contactEntity);
+	ContactResponseDto update(ContactRequestDto contactDto, Long id);
 
-    void delete(ContactEntity contactEntity);
+	void delete(ContactRequestDto contactDto);
 
-    void deleteById(Long id);
+	void deleteById(Long id);
 }

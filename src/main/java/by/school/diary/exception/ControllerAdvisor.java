@@ -64,5 +64,15 @@ public class ControllerAdvisor {
                 .timestamp(now().toString())
                 .build();
     }
+    
+	@ResponseStatus(NOT_FOUND)
+	@ExceptionHandler(ContactNotFoundException.class)
+	public ErrorResponseDto handleContactNotFoundException(ContactNotFoundException contactNotFoundException) {
+		return ErrorResponseDto.builder()
+				.message(contactNotFoundException.getMessage())
+				.status(NOT_FOUND)
+				.timestamp(now().toString())
+				.build();
+	}
 
 }

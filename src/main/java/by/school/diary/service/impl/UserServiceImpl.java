@@ -1,7 +1,7 @@
 package by.school.diary.service.impl;
 
 import by.school.diary.domain.Role;
-import by.school.diary.dto.request.RequestUserDto;
+import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.request.SignUpRequestDto;
 import by.school.diary.dto.response.UserResponseDto;
 import by.school.diary.entity.UserEntity;
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto save(RequestUserDto userDto) {
+    public UserResponseDto save(UserRequestDto userDto) {
         UserEntity user = modelMapper.toEntity(userDto);
         user.getRoles().add(Role.ROLE_USER);
         user.setPassword(encoder.encode(userDto.getPassword()));
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto update(RequestUserDto userDto, Long id) {
+    public UserResponseDto update(UserRequestDto userDto, Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         userEntity.setPassword(encoder.encode(userDto.getPassword()));
         userEntity.setUsername(userDto.getUsername());

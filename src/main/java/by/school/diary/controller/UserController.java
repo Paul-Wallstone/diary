@@ -1,7 +1,7 @@
 package by.school.diary.controller;
 
 import by.school.diary.domain.Role;
-import by.school.diary.dto.request.RequestUserDto;
+import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.response.UserResponseDto;
 import by.school.diary.service.UserService;
 import by.school.diary.utils.UserModelAssembler;
@@ -55,7 +55,7 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(code = HttpStatus.CREATED)
     @Operation(summary = "Creates a new user in the Diary application")
-    public EntityModel<UserResponseDto> save(@Valid @RequestBody RequestUserDto userDto) {
+    public EntityModel<UserResponseDto> save(@Valid @RequestBody UserRequestDto userDto) {
         UserResponseDto user = userService.save(userDto);
         return assembler.toModel(user);
     }
@@ -70,7 +70,7 @@ public class UserController {
     @PutMapping("/users/{id}/update")
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Update user with id from the Diary application")
-    public EntityModel<UserResponseDto> update(@PathVariable() Long id, @Valid @RequestBody RequestUserDto userDto) {
+    public EntityModel<UserResponseDto> update(@PathVariable() Long id, @Valid @RequestBody UserRequestDto userDto) {
         UserResponseDto user = userService.update(userDto, id);
         return assembler.toModel(user);
     }
