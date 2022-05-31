@@ -13,6 +13,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @SpringBootApplication
 public class DiaryApplication {
 
@@ -31,16 +35,18 @@ public class DiaryApplication {
 
 //    @Bean
 //    public ApplicationRunner dataLoader(UserRepository repo, PasswordEncoder encoder) {
-//        return args -> repo.save(UserEntity
-//                .builder()
-//                .firstName("John")
-//                .lastName("Socket")
-//                .username("jsocket")
-//                .password(encoder.encode("123"))
-//                .email("jsocket@example.com")
-//                .verified(true)
-//                .role(Role.ROLE_ADMIN)
-//                .build());
+//        return args ->
+//            repo.save(UserEntity
+//                    .builder()
+//                    .firstName("John")
+//                    .lastName("Socket")
+//                    .username("jsocket")
+//                    .password(encoder.encode("123"))
+//                    .email("jsocket@example.com")
+//                    .verified(true)
+//                    .roles(new HashSet<>(List.of(Role.ROLE_USER, Role.ROLE_ADMIN)))
+//                    .build());
+//
 //    }
 
 }

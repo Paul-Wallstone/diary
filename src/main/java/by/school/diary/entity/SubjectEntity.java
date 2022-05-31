@@ -1,11 +1,10 @@
 package by.school.diary.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "subjects")
@@ -14,13 +13,16 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SubjectEntity {
+@EqualsAndHashCode(exclude="employees")
+public class SubjectEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany(mappedBy = "subjects")
-    private Set<EmployeeEntity> employees;
+    @ToString.Exclude
+    private Set<EmployeeEntity> employees = new HashSet<>();
 
     @Column(nullable = false, length = 125)
     private String title;

@@ -1,10 +1,13 @@
 package by.school.diary.utils;
 
+import by.school.diary.dto.request.LessonRequestDto;
 import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.request.ContactRequestDto;
 import by.school.diary.dto.request.SignUpRequestDto;
+import by.school.diary.dto.response.LessonResponseDto;
 import by.school.diary.dto.response.ContactResponseDto;
 import by.school.diary.dto.response.UserResponseDto;
+import by.school.diary.entity.LessonEntity;
 import by.school.diary.entity.ContactEntity;
 import by.school.diary.entity.UserEntity;
 import org.modelmapper.ModelMapper;
@@ -31,6 +34,14 @@ public class CustomModelMapper {
         return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, UserEntity.class) : null;
     }
 
+    public LessonEntity toEntity(LessonResponseDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, LessonEntity.class) : null;
+    }
+
+    public LessonEntity toEntity(LessonRequestDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, LessonEntity.class) : null;
+    }
+
     public UserRequestDto toDto(UserResponseDto dto) {
         return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, UserRequestDto.class) : null;
     }
@@ -38,7 +49,15 @@ public class CustomModelMapper {
     public UserResponseDto toDto(UserEntity entity) {
         return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, UserResponseDto.class) : null;
     }
-    
+
+    public LessonResponseDto toDto(LessonEntity entity) {
+        return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, LessonResponseDto.class) : null;
+    }
+
+    public LessonRequestDto toDto(LessonResponseDto entity) {
+        return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, LessonRequestDto.class) : null;
+    }
+
 
     public ContactEntity toEntity(ContactRequestDto dto) {
         return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, ContactEntity.class) : null;
