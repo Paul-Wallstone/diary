@@ -12,14 +12,16 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude = {"student", "user", "contact"})
-public class ParentEntity implements Serializable {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"student", "user", "contact"})
+public class ParentEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "info_id")
+    @ToString.Exclude
+    private InfoEntity info;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

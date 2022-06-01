@@ -1,12 +1,10 @@
 package by.school.diary.entity;
 
-import by.school.diary.domain.Sex;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,38 +14,33 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude="subjects")
-public class EmployeeEntity implements Serializable {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "subjects")
+public class EmployeeEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "info_id")
+    @ToString.Exclude
+    private InfoEntity info;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
-    @Column(nullable = false)
-    LocalDateTime birthday;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 6)
-    private Sex sex;
-
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @ToString.Exclude
     private final Set<SubjectEntity> subjects = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "position_id")
     @ToString.Exclude
     private PositionEntity position;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @NotNull
     @ToString.Exclude
     private UserEntity user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "contact_id")
     @ToString.Exclude
     private ContactEntity contact;

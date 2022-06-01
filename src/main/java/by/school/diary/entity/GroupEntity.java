@@ -13,19 +13,16 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude = {"employee", "students"})
-public class GroupEntity implements Serializable {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"employee", "students"})
+public class GroupEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false, length = 30)
     private String title;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "employee_id")
     @ToString.Exclude
     private EmployeeEntity employee;
@@ -39,10 +36,12 @@ public class GroupEntity implements Serializable {
         this.students.add(student);
         student.setGroup(this);
     }
+
     public void removeStudent(StudentEntity student) {
         student.setGroup(null);
         this.students.remove(student);
     }
+
     public void removeStudents() {
         for (StudentEntity student : this.students) {
             student.setGroup(null);

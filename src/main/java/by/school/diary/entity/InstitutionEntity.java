@@ -11,14 +11,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude = {"contact"})
-public class InstitutionEntity implements Serializable {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"contact"})
+public class InstitutionEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false, length = 125)
     private String title;

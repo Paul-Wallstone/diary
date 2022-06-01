@@ -1,7 +1,6 @@
 package by.school.diary.entity;
 
 import by.school.diary.domain.Role;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +10,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,11 +20,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserEntity implements UserDetails, Serializable {
+@ToString(callSuper = true)
+public class UserEntity extends BaseEntity implements UserDetails, Serializable {
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @NotBlank(message = "FirstName is mandatory")
     @Size(min = 2, message = "FirstName must be at least 2 characters long")
@@ -68,10 +65,6 @@ public class UserEntity implements UserDetails, Serializable {
     @Column(name = "role_id")
     private Set<Role> roles = new HashSet<>();
 
-    @JsonFormat(pattern = "yyyy-mm-dd HH:mm:ss")
-    @Column(nullable = false, updatable = false)
-    LocalDateTime createdDate;
-
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -81,11 +74,6 @@ public class UserEntity implements UserDetails, Serializable {
         this.email = email;
         this.authorities = authorities;
         this.password = password;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
     }
 
     @Override

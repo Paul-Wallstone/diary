@@ -1,9 +1,6 @@
 package by.school.diary.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,12 +13,10 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ContactEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+@ToString(callSuper = true)
+public class ContactEntity extends BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private static final long serialVersionUID = 1L;
 
     @NotBlank(message = "City is mandatory")
     @Size(min = 2, message = "City must be at least 2 characters long")
