@@ -1,11 +1,13 @@
 package by.school.diary.entity;
 
+import by.school.diary.domain.Mark;
 import lombok.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity(name = "diaries")
@@ -14,32 +16,45 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude = {"lessons"})
-public class DiaryEntity implements Serializable {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"lessons"})
+public class DiaryEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "student_id")
+    @NotNull
+    @ToString.Exclude
+    private StudentEntity student;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToMany(cascade = {CascadeType.MERGE})
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            mappedBy = "diary", orphanRemoval = true)
     @ToString.Exclude
     private final Set<LessonEntity> lessons = new HashSet<>();
 
     public void addLesson(LessonEntity lesson) {
+        this.lessons.iterator();
+        lesson.setStudent(student);
         this.lessons.add(lesson);
-        lesson.getDiaries().add(this);
     }
+
+    public void setMark(Mark mark, Long id) {
+        this.lessons.iterator();
+        this.lessons.stream().forEach(lesson -> {
+            if (lesson.getId().equals(id))
+                lesson.setMark(mark);
+        });
+    }
+
 
     public void removeLesson(LessonEntity lesson) {
         this.lessons.remove(lesson);
-        lesson.getDiaries().remove(this);
     }
 
     public void removeLessons() {
         for (LessonEntity lesson : this.lessons) {
-            lesson.getDiaries().remove(this);
+            lesson.setStudent(null);
+            lesson.setDiary(null);
         }
     }
 }

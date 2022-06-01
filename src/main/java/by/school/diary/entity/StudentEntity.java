@@ -1,12 +1,11 @@
 package by.school.diary.entity;
 
-import by.school.diary.domain.Sex;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,44 +15,34 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude = {"group", "parents", "diary", "user", "contact"})
-public class StudentEntity implements Serializable {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"group", "parents", "user", "contact"})
+public class StudentEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "info_id")
+    @ToString.Exclude
+    private InfoEntity info;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 6)
-    private Sex sex;
-
-    @JsonFormat(pattern = "yyyy-mm-dd")
-    @Column(nullable = false)
-    Date birthday;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "group_id")
     @ToString.Exclude
     private GroupEntity group;
 
-    @OneToMany(cascade = CascadeType.MERGE,
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},
             mappedBy = "student", orphanRemoval = true)
     @ToString.Exclude
     private final Set<ParentEntity> parents = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diary_id")
-    @ToString.Exclude
-    private DiaryEntity diary;
-
-    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @NotNull
     @ToString.Exclude
     private UserEntity user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "contact_id")
     @ToString.Exclude
     private ContactEntity contact;

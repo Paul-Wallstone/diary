@@ -13,16 +13,15 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude="employees")
-public class SubjectEntity implements Serializable {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude="employees")
+public class SubjectEntity extends BaseEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @ManyToMany(mappedBy = "subjects")
     @ToString.Exclude
-    private Set<EmployeeEntity> employees = new HashSet<>();
+    private final Set<EmployeeEntity> employees = new HashSet<>();
 
     @Column(nullable = false, length = 125)
     private String title;
