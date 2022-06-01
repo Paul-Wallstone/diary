@@ -116,24 +116,24 @@ public class DataLoader implements ApplicationRunner {
         ContactEntity contact = ContactEntity.builder()
                 .address("some address")
                 .city("Minsk")
-                .phone("+37529-311-31-31")
-                .postcode(2021)
+                .phone("+37529-311-31-35")
+                .postcode("2021")
                 .build();
         log.info("Created: " + contact.toString());
 
         ContactEntity contact2 = contactRepository.save(ContactEntity.builder()
                 .address("some address2")
                 .city("Minsk")
-                .phone("+37529-322-32-32")
-                .postcode(2022)
+                .phone("+37529-322-32-36")
+                .postcode("2022")
                 .build());
         log.info("Created: " + contact2.toString());
 
         ContactEntity contact3 = contactRepository.save(ContactEntity.builder()
                 .address("some address3")
                 .city("Minsk")
-                .phone("+37529-322-32-32")
-                .postcode(2023)
+                .phone("+37529-322-32-34")
+                .postcode("2023")
                 .build());
         log.info("Created: " + contact3.toString());
 
@@ -141,7 +141,7 @@ public class DataLoader implements ApplicationRunner {
                 .address("some address4")
                 .city("Minsk")
                 .phone("+37529-321-32-33")
-                .postcode(2024)
+                .postcode("2024")
                 .build());
         log.info("Created: " + contact4.toString());
 
