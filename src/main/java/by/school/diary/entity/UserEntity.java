@@ -14,12 +14,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "users")
-@Table()
+@Entity()
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class UserEntity extends BaseEntity implements UserDetails, Serializable {
 

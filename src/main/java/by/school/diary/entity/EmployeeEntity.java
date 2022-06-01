@@ -8,9 +8,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "employees")
+@Entity
 @Data
-@Table
+@Table(name = "employees")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

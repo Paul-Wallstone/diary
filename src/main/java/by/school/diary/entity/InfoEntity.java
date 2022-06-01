@@ -8,12 +8,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity(name = "info")
+@Entity
 @Data
-@Table
+@Table(name = "info")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class InfoEntity extends BaseEntity implements Serializable {
 

@@ -5,9 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name = "institutions")
+@Entity
 @Data
-@Table
+@Table(name = "institutions")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

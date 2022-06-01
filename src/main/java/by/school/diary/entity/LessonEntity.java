@@ -8,14 +8,14 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity(name = "lessons")
+@Entity
 @Data
-@Table
+@Table(name = "lessons")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude = {"subject", "group", "employee", "diaries"})
+@EqualsAndHashCode(callSuper = true, exclude = {"subject", "group", "employee"})
 public class LessonEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,7 +49,7 @@ public class LessonEntity extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")
     @ToString.Exclude
-    private  DiaryEntity diary;
+    private DiaryEntity diary;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "student_id")

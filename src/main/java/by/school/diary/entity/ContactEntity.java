@@ -7,12 +7,13 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Entity(name = "contacts")
+@Entity
 @Data
-@Table
+@Table(name = "contacts")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class ContactEntity extends BaseEntity implements Serializable {
 

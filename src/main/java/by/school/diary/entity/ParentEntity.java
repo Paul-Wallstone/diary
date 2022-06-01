@@ -6,9 +6,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-@Entity(name = "parents")
+@Entity
 @Data
-@Table
+@Table(name = "parents")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

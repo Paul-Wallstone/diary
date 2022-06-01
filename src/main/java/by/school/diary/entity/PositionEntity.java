@@ -5,12 +5,13 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity(name = "positions")
+@Entity
 @Data
-@Table
+@Table(name = "positions")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class PositionEntity extends BaseEntity implements Serializable {
 
