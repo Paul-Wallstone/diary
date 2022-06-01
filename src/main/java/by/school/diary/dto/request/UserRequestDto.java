@@ -9,13 +9,13 @@ import javax.validation.constraints.Size;
 @Data
 public class UserRequestDto {
     @NotBlank(message = "FirstName is mandatory")
-    @Size(min = 2, message = "Name must be at least 2 characters long")
+    @Size(min = 2, message = "FirstName must be at least 2 characters long")
     private String firstname;
     @NotBlank(message = "LastName is mandatory")
-    @Size(min = 2, message = "Name must be at least 2 characters long")
+    @Size(min = 2, message = "LastName must be at least 2 characters long")
     private String lastname;
-    @NotBlank(message = "LastName is mandatory")
-    @Size(min = 2, message = "Username must be at least 2 characters long")
+    @NotBlank(message = "UserName is mandatory")
+    @Size(min = 2, message = "UserName must be at least 2 characters long")
     private String username;
     @NotBlank(message = "Email is mandatory")
     @Email
