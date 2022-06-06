@@ -23,6 +23,6 @@ public abstract class BaseEntity {
 
 
     @UpdateTimestamp
-    @Column(name = "modified_at")
+    @Column(name = "modified_at", nullable = false)
     protected LocalDateTime modifiedAt;
 }

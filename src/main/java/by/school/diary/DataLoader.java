@@ -13,13 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-
-import static java.time.LocalDateTime.now;
 
 
 @Slf4j
@@ -28,9 +25,8 @@ public class DataLoader implements ApplicationRunner {
 
     UserRepository userRepository;
     ContactRepository contactRepository;
-    DiaryRepository diaryRepository;
     GroupRepository groupRepository;
-    LessonRepository lessonRepository;
+    ScheduleRepository scheduleRepository;
     StudentRepository studentRepository;
     ParentRepository parentRepository;
     PositionRepository positionRepository;
@@ -38,25 +34,27 @@ public class DataLoader implements ApplicationRunner {
     PasswordEncoder encoder;
     EmployeeRepository employeeRepository;
     InfoRepository infoRepository;
+    InstitutionRepository institutionRepository;
+    LessonRepository lessonRepository;
 
     @Autowired
     public DataLoader(UserRepository userRepository,
+                      InstitutionRepository institutionRepository,
                       ContactRepository contactRepository,
-                      DiaryRepository diaryRepository,
                       GroupRepository groupRepository,
-                      LessonRepository lessonRepository,
+                      ScheduleRepository scheduleRepository,
                       StudentRepository studentRepository,
                       ParentRepository parentRepository,
                       PositionRepository positionRepository,
                       SubjectRepository subjectRepository,
                       PasswordEncoder encoder,
                       EmployeeRepository employeeRepository,
+                      LessonRepository lessonRepository,
                       InfoRepository infoRepository) {
         this.userRepository = userRepository;
         this.contactRepository = contactRepository;
-        this.diaryRepository = diaryRepository;
         this.groupRepository = groupRepository;
-        this.lessonRepository = lessonRepository;
+        this.scheduleRepository = scheduleRepository;
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
         this.positionRepository = positionRepository;
@@ -64,6 +62,8 @@ public class DataLoader implements ApplicationRunner {
         this.encoder = encoder;
         this.employeeRepository = employeeRepository;
         this.infoRepository = infoRepository;
+        this.institutionRepository = institutionRepository;
+        this.lessonRepository = lessonRepository;
     }
 
     @Transactional
@@ -113,6 +113,59 @@ public class DataLoader implements ApplicationRunner {
                 .build());
         log.info("Created: " + user4.toString());
 
+        GroupEntity group = GroupEntity.builder()
+                .title("A1")
+                .build();
+        log.info("Created: " + group.toString());
+
+        StudentEntity student = StudentEntity.builder()
+                .user(user)
+                .group(group)
+                .build();
+        studentRepository.save(student);
+        log.info("Created: " + student.toString());
+
+        StudentEntity student2 = StudentEntity.builder()
+                .user(user4)
+                .group(group)
+                .build();
+        studentRepository.save(student2);
+        log.info("Created: " + student2.toString());
+
+        EmployeeEntity employee = EmployeeEntity.builder()
+                .user(user3)
+                .build();
+        employeeRepository.save(employee);
+        log.info("Created: " + employee.toString());
+
+        SubjectEntity subject = SubjectEntity.builder()
+                .title("Math")
+                .employee(employee)
+                .build();
+        subjectRepository.save(subject);
+        log.info("Created: " + subject.toString());
+
+        LessonEntity lesson = LessonEntity.builder()
+                .date(LocalDate.of(2022, 6, 6))
+                .timeFrom(LocalTime.of(12, 0))
+                .timeTo(LocalTime.of(12, 45))
+                .subject(subject)
+                .group(student.getGroup())
+                .build();
+
+        lesson.setEmployee(employee);
+
+        ScheduleEntity schedule = ScheduleEntity.builder()
+                .lesson(lesson)
+                .build();
+        schedule.setStudent(student);
+
+        ScheduleEntity schedule2 = ScheduleEntity.builder()
+                .lesson(lesson)
+                .build();
+        schedule2.setStudent(student2);
+        log.info("Created: " + schedule.toString());
+
         ContactEntity contact = ContactEntity.builder()
                 .address("some address")
                 .city("Minsk")
@@ -137,164 +190,51 @@ public class DataLoader implements ApplicationRunner {
                 .build());
         log.info("Created: " + contact3.toString());
 
-        ContactEntity contact4 = contactRepository.save(ContactEntity.builder()
-                .address("some address4")
-                .city("Minsk")
-                .phone("+37529-321-32-33")
-                .postcode("2024")
-                .build());
-        log.info("Created: " + contact4.toString());
-
-        GroupEntity group = GroupEntity.builder()
-                .title("A1")
-                .build();
-        groupRepository.save(group);
-        log.info("Created: " + group.toString());
-
-        StudentEntity student = StudentEntity.builder()
-                .user(user)
-                .group(group)
-                .contact(contact)
-                .build();
-        studentRepository.save(student);
-        log.info("Created: " + student.toString());
-
-        ParentEntity parent = parentRepository.save(ParentEntity.builder()
-                .build());
-        log.info("Created: " + parent.toString());
-
-        student.addParent(parent);
-        studentRepository.save(student);
-        log.info("Created: " + student.toString());
-
-        parent.setContact(contact2);
-        parent.setUser(user2);
-        parentRepository.save(parent);
-        log.info("Created: " + parent.toString());
-
         InfoEntity info = InfoEntity.builder()
-                .birthday(new Date())
+                .birthday(LocalDate.of(2000, 12, 12))
                 .sex(Sex.MALE)
                 .bio("some bio")
                 .build();
+        log.info("Created: " + info.toString());
 
         InfoEntity info2 = InfoEntity.builder()
-                .birthday(new Date())
+                .birthday(LocalDate.of(2000, 12, 12))
                 .sex(Sex.MALE)
                 .bio("some bio2")
                 .build();
-        infoRepository.save(info2);
         log.info("Created: " + info2.toString());
 
         InfoEntity info3 = InfoEntity.builder()
-                .birthday(new Date())
+                .birthday(LocalDate.of(2000, 12, 12))
                 .sex(Sex.FEMALE)
                 .bio("some bio3")
                 .build();
-        infoRepository.save(info3);
         log.info("Created: " + info3.toString());
 
-        InfoEntity info4 = InfoEntity.builder()
-                .birthday(new Date())
-                .sex(Sex.FEMALE)
-                .bio("some bio4")
+        ParentEntity parent = ParentEntity.builder()
                 .build();
-        infoRepository.save(info4);
-        log.info("Created: " + info4.toString());
-
-        student.setInfo(info);
-        studentRepository.save(student);
-        log.info("Created: " + student.toString());
-
-        parent.setInfo(info2);
-        parentRepository.save(parent);
         log.info("Created: " + parent.toString());
 
-        EmployeeEntity employee = EmployeeEntity.builder()
-                .user(user3)
-                .build();
-        employeeRepository.save(employee);
-        log.info("Created: " + employee.toString());
+        student.setParent(parent);
+        log.info("Created: " + student.toString());
+
+        student.setInfo(info);
+        student2.setInfo(info2);
+        student.setContact(contact);
+        student2.setContact(contact2);
 
         PositionEntity position = PositionEntity.builder()
                 .title("Director")
                 .build();
-        positionRepository.save(position);
-        log.info("Created: " + position.toString());
-
-        employee.setContact(contact3);
-        employee.setInfo(info3);
         employee.setPosition(position);
-        employeeRepository.save(employee);
-        log.info("Created: " + employee.toString());
 
+        schedule.setMark(Mark.EIGHT);
 
-        SubjectEntity subject = SubjectEntity.builder()
-                .title("Math")
+        InstitutionEntity institution = InstitutionEntity.builder()
+                .title("School")
                 .build();
-        subjectRepository.save(subject);
-        log.info("Created: " + subject.toString());
-
-        SubjectEntity subject2 = SubjectEntity.builder()
-                .title("English")
-                .build();
-        subjectRepository.save(subject2);
-        log.info("Created: " + subject2.toString());
-
-        employee.getSubjects().add(subject);
-        employeeRepository.save(employee);
-        log.info("Created: " + employee.toString());
-
-        group.setEmployee(employee);
-        groupRepository.save(group);
-        log.info("Created: " + group.toString());
-
-        DiaryEntity diary = DiaryEntity.builder()
-                .student(student)
-                .build();
-        diaryRepository.save(diary);
-        log.info("Created: " + diary.toString());
-
-        StudentEntity student2 = StudentEntity.builder()
-                .user(user4)
-                .group(group)
-                .contact(contact4)
-                .info(info4)
-                .build();
-        studentRepository.save(student2);
-        log.info("Created: " + student2.toString());
-
-        LessonEntity lesson = LessonEntity.builder()
-                .date(new Date())
-                .subject(subject)
-                .group(group)
-                .build();
-        log.info("Created: " + lesson.toString());
-
-        LessonEntity lesson2 = LessonEntity.builder()
-                .date(new Date())
-                .subject(subject2)
-                .group(group)
-                .build();
-        log.info("Created: " + lesson2.toString());
-
-        diary.addLesson(lesson);
-        diary.addLesson(lesson2);
-        diaryRepository.save(diary);
-        log.info("Created: " + diary.toString());
-
-        DiaryEntity diary2 = DiaryEntity.builder()
-                .student(student2)
-                .build();
-        diary2.addLesson(lesson);
-        diary2.addLesson(lesson2);
-        diaryRepository.save(diary2);
-        log.info("Created: " + diary2.toString());
-
-        diary.setMark(Mark.EIGHT, 1L);
-        diary2.setMark(Mark.FIVE, 3L);
-        diaryRepository.save(diary);
-        diaryRepository.save(diary2);
-
+        institution.setEmployee(employee);
+        institution.setGroup(group);
+        institutionRepository.save(institution);
     }
 }

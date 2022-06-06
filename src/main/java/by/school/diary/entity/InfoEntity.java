@@ -6,7 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -26,7 +26,7 @@ public class InfoEntity extends BaseEntity implements Serializable {
 
     @JsonFormat(pattern = "yyyy-mm-dd")
     @Column(nullable = false)
-    private Date birthday;
+    private LocalDate birthday;
 
     @Column(columnDefinition = "text")
     private String bio;

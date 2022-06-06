@@ -4,8 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -14,15 +12,19 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude="employees")
+@EqualsAndHashCode(callSuper = true)
 public class SubjectEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ManyToMany(mappedBy = "subjects")
-    @ToString.Exclude
-    private final Set<EmployeeEntity> employees = new HashSet<>();
-
     @Column(nullable = false, length = 125)
     private String title;
+
+    @Column(length = 125)
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    @ToString.Exclude
+    private EmployeeEntity employee;
 }

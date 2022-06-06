@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude = {"employee", "students"})
+@EqualsAndHashCode(callSuper = true, exclude = {"employee", "students", "institution"})
 public class GroupEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,7 +22,7 @@ public class GroupEntity extends BaseEntity implements Serializable {
     @Column(nullable = false, length = 30)
     private String title;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "employee_id")
     @ToString.Exclude
     private EmployeeEntity employee;
@@ -30,7 +30,13 @@ public class GroupEntity extends BaseEntity implements Serializable {
     @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "group", orphanRemoval = true)
     @ToString.Exclude
-    private final Set<StudentEntity> students = new HashSet<>();
+    private Set<StudentEntity> students = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "institution_id")
+    @ToString.Exclude
+    private InstitutionEntity institution;
+
 
     public void addStudent(StudentEntity student) {
         this.students.add(student);

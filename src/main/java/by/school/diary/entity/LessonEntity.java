@@ -1,16 +1,17 @@
 package by.school.diary.entity;
 
-import by.school.diary.domain.Mark;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Data
-@Table(name = "lessons")
+@Table(name = "lessons",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "time_from", "time_to", "employee_id"})})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,37 +23,36 @@ public class LessonEntity extends BaseEntity implements Serializable {
 
     @Column(nullable = false)
     @NotNull
-    private Date date;
+    private LocalDate date;
 
-    private Mark mark;
+    @Column(name = "time_from", nullable = false)
+    @NotNull
+    private LocalTime timeFrom;
 
-    @Column(columnDefinition = "text")
-    private String message;
+    @Column(name = "time_to", nullable = false)
+    @NotNull
+    private LocalTime timeTo;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "subject_id")
     @NotNull
     @ToString.Exclude
     private SubjectEntity subject;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "group_id")
-    @NotNull
     @ToString.Exclude
     private GroupEntity group;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "employee_id")
+    @NotNull
     @ToString.Exclude
     private EmployeeEntity employee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diary_id")
-    @ToString.Exclude
-    private DiaryEntity diary;
+    public void setEmployee(EmployeeEntity employee) {
+        this.employee = employee;
+        this.employee.getLessons().add(this);
+    }
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "student_id")
-    @ToString.Exclude
-    private StudentEntity student;
 }

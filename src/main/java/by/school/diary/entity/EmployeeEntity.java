@@ -15,49 +15,77 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude = "subjects")
+@EqualsAndHashCode(callSuper = true, exclude = {"subjects", "info", "contact", "position", "user", "lessons", "institution"})
 public class EmployeeEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "info_id")
     @ToString.Exclude
     private InfoEntity info;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_id")
     @ToString.Exclude
-    private final Set<SubjectEntity> subjects = new HashSet<>();
+    private ContactEntity contact;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "position_id")
     @ToString.Exclude
     private PositionEntity position;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id")
     @NotNull
     @ToString.Exclude
     private UserEntity user;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "contact_id")
+    @OneToMany(mappedBy = "employee")
     @ToString.Exclude
-    private ContactEntity contact;
+    @Builder.Default
+    private Set<SubjectEntity> subjects = new HashSet<>();
 
-    public void addSubject(SubjectEntity subject) {
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            mappedBy = "employee", orphanRemoval = true)
+    @ToString.Exclude
+    @Builder.Default
+    private Set<LessonEntity> lessons = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "institution_id")
+    @ToString.Exclude
+    private InstitutionEntity institution;
+
+    public void setSubject(SubjectEntity subject) {
         this.subjects.add(subject);
-        subject.getEmployees().add(this);
+        subject.setEmployee(this);
     }
 
     public void removeSubject(SubjectEntity subject) {
         this.subjects.remove(subject);
-        subject.getEmployees().remove(this);
+        subject.setEmployee(null);
     }
 
-    public void removeBooks() {
+    public void removeSubjects() {
         for (SubjectEntity subject : this.subjects) {
-            subject.getEmployees().remove(this);
+            subject.setEmployee(null);
+        }
+    }
+
+    public void setLesson(LessonEntity lesson) {
+        this.lessons.add(lesson);
+        lesson.setEmployee(this);
+    }
+
+    public void removeLesson(LessonEntity lesson) {
+        this.lessons.remove(lesson);
+        lesson.setEmployee(null);
+    }
+
+    public void removeLessons() {
+        for (LessonEntity lesson : this.lessons) {
+            lesson.setEmployee(null);
         }
     }
 }

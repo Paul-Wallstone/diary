@@ -1,20 +1,19 @@
 package by.school.diary.dto.request;
 
 import by.school.diary.domain.Mark;
-import by.school.diary.entity.DiaryEntity;
 import by.school.diary.entity.EmployeeEntity;
 import by.school.diary.entity.GroupEntity;
 import by.school.diary.entity.SubjectEntity;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
 public class LessonRequestDto {
     private Long id;
 
-    private Date date;
+    private LocalDate date;
 
     private Mark mark;
 
@@ -26,5 +25,4 @@ public class LessonRequestDto {
 
     private EmployeeEntity employee;
 
-    private Set<DiaryEntity> diaries;
 }

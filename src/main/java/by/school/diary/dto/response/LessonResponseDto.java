@@ -1,7 +1,6 @@
 package by.school.diary.dto.response;
 
 import by.school.diary.domain.Mark;
-import by.school.diary.entity.DiaryEntity;
 import by.school.diary.entity.EmployeeEntity;
 import by.school.diary.entity.GroupEntity;
 import by.school.diary.entity.SubjectEntity;
@@ -26,5 +25,4 @@ public class LessonResponseDto {
 
     private EmployeeEntity employee;
 
-    private Set<DiaryEntity> diaries;
 }

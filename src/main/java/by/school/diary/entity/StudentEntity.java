@@ -21,12 +21,17 @@ public class StudentEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "info_id")
     @ToString.Exclude
     private InfoEntity info;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_id")
+    @ToString.Exclude
+    private ContactEntity contact;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "group_id")
     @ToString.Exclude
     private GroupEntity group;
@@ -36,18 +41,20 @@ public class StudentEntity extends BaseEntity implements Serializable {
     @ToString.Exclude
     private final Set<ParentEntity> parents = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id")
     @NotNull
     @ToString.Exclude
     private UserEntity user;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "contact_id")
-    @ToString.Exclude
-    private ContactEntity contact;
 
-    public void addParent(ParentEntity parent) {
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            mappedBy = "student")
+    @ToString.Exclude
+    @Builder.Default
+    private Set<ScheduleEntity> lessons = new HashSet<>();
+
+    public void setParent(ParentEntity parent) {
         this.parents.add(parent);
         parent.setStudent(this);
     }
