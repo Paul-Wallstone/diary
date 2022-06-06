@@ -2,12 +2,11 @@ package by.school.diary.utils;
 
 import by.school.diary.dto.request.LessonRequestDto;
 import by.school.diary.dto.request.UserRequestDto;
-import by.school.diary.dto.request.ContactRequestDto;
+import by.school.diary.dto.request.ContactDto;
 import by.school.diary.dto.request.SignUpRequestDto;
 import by.school.diary.dto.response.LessonResponseDto;
-import by.school.diary.dto.response.ContactResponseDto;
 import by.school.diary.dto.response.UserResponseDto;
-import by.school.diary.entity.ScheduleEntity;
+import by.school.diary.entity.StudentLessonEntity;
 import by.school.diary.entity.ContactEntity;
 import by.school.diary.entity.UserEntity;
 import org.modelmapper.ModelMapper;
@@ -34,12 +33,12 @@ public class CustomModelMapper {
         return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, UserEntity.class) : null;
     }
 
-    public ScheduleEntity toEntity(LessonResponseDto dto) {
-        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, ScheduleEntity.class) : null;
+    public StudentLessonEntity toEntity(LessonResponseDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, StudentLessonEntity.class) : null;
     }
 
-    public ScheduleEntity toEntity(LessonRequestDto dto) {
-        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, ScheduleEntity.class) : null;
+    public StudentLessonEntity toEntity(LessonRequestDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, StudentLessonEntity.class) : null;
     }
 
     public UserRequestDto toDto(UserResponseDto dto) {
@@ -50,7 +49,7 @@ public class CustomModelMapper {
         return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, UserResponseDto.class) : null;
     }
 
-    public LessonResponseDto toDto(ScheduleEntity entity) {
+    public LessonResponseDto toDto(StudentLessonEntity entity) {
         return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, LessonResponseDto.class) : null;
     }
 
@@ -58,20 +57,11 @@ public class CustomModelMapper {
         return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, LessonRequestDto.class) : null;
     }
 
-
-    public ContactEntity toEntity(ContactRequestDto dto) {
+    public ContactEntity toEntity(ContactDto dto) {
         return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, ContactEntity.class) : null;
     }
 
-    public ContactEntity toEntity(ContactResponseDto dto) {
-        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, ContactEntity.class) : null;
-    }
-
-    public ContactRequestDto toDto(ContactResponseDto dto) {
-        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, ContactRequestDto.class) : null;
-    }
-
-    public ContactResponseDto toDto(ContactEntity entity) {
-        return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, ContactResponseDto.class) : null;
+    public ContactDto toDto(ContactEntity entity) {
+        return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, ContactDto.class) : null;
     }
 }

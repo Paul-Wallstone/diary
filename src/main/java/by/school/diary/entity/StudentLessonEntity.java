@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Builder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true, exclude = {"student"})
-public class ScheduleEntity extends BaseEntity implements Serializable {
+public class StudentLessonEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

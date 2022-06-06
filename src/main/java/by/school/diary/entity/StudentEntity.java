@@ -52,7 +52,7 @@ public class StudentEntity extends BaseEntity implements Serializable {
             mappedBy = "student")
     @ToString.Exclude
     @Builder.Default
-    private Set<ScheduleEntity> lessons = new HashSet<>();
+    private Set<StudentLessonEntity> lessons = new HashSet<>();
 
     public void setParent(ParentEntity parent) {
         this.parents.add(parent);

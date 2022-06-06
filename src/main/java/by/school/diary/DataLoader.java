@@ -155,12 +155,12 @@ public class DataLoader implements ApplicationRunner {
 
         lesson.setEmployee(employee);
 
-        ScheduleEntity schedule = ScheduleEntity.builder()
+        StudentLessonEntity schedule = StudentLessonEntity.builder()
                 .lesson(lesson)
                 .build();
         schedule.setStudent(student);
 
-        ScheduleEntity schedule2 = ScheduleEntity.builder()
+        StudentLessonEntity schedule2 = StudentLessonEntity.builder()
                 .lesson(lesson)
                 .build();
         schedule2.setStudent(student2);
