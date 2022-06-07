@@ -93,7 +93,7 @@ public class UserController {
     @PutMapping("/current/update")
     @ResponseStatus(code = HttpStatus.OK)
     @PreAuthorize("hasAnyRole('" + Role.Fields.ROLE_USER + "')")
-    @Operation(summary = "Update user with id from the Diary application")
+    @Operation(summary = "Update current user from the Diary application")
     public EntityModel<UserDto> updateCurrentByPrincipal(@Valid @RequestBody UserDto userDto, Principal principal) {
         UserDto user = userService.updateCurrentByPrincipal(userDto, principal);
         return assembler.toModel(user);

@@ -71,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(API_DOCS).permitAll()
                 .antMatchers(SWAGGER_UI).permitAll()
+                .antMatchers(SWAGGER_UI_DOT).permitAll()
                 .antMatchers(V_1_AUTH).permitAll()
                 .antMatchers(SecurityConstants.SIGN_UP_URLS).permitAll()
                 .antMatchers(V_1).hasAnyRole(ADMIN, USER, STUDENT, DIRECTOR, PARENT, TEACHER)
@@ -95,6 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers(H_2_CONSOLE)
+                .antMatchers(SWAGGER_UI_DOT)
                 .antMatchers(SWAGGER_UI);
     }
 

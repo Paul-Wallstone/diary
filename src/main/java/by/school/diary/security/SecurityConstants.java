@@ -11,6 +11,7 @@ public class SecurityConstants {
 
     public static final String API_DOCS = "/api-docs/**";
     public static final String SWAGGER_UI = "/swagger-ui/**";
+    public static final String SWAGGER_UI_DOT = "/swagger-ui.**";
     public static final String V_1_AUTH = "/v1/auth/**";
     public static final String V_1 = "/v1/**";
     public static final String ADMIN = "ADMIN";

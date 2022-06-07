@@ -7,8 +7,10 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -18,6 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class UserModelAssembler implements RepresentationModelAssembler<UserDto, EntityModel<UserDto>> {
+
     private final CustomModelMapper modelMapper;
 
     public UserModelAssembler(CustomModelMapper modelMapper) {
@@ -33,7 +36,10 @@ public class UserModelAssembler implements RepresentationModelAssembler<UserDto,
                 linkTo(methodOn(UserController.class).getAll()).withRel("users"),
                 linkTo(methodOn(UserController.class).deleteById(user.getId())).withRel("delete"),
                 linkTo(methodOn(UserController.class).save(user)).withRel("save"),
-                linkTo(methodOn(UserController.class).update(user.getId(), user)).withRel("update"));
+                linkTo(methodOn(UserController.class).update(user.getId(), user)).withRel("update"),
+                linkTo(methodOn(UserController.class).getCurrentUser(null)).withRel("current"),
+                linkTo(methodOn(UserController.class).updateCurrentByPrincipal(user, null)).withRel("update-current")
+        );
     }
 
     @NonNull

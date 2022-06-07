@@ -1,6 +1,7 @@
 package by.school.diary.entity;
 
 import by.school.diary.domain.Role;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = true,exclude = {"info","contact"})
-
 @ToString(callSuper = true)
 public class UserEntity extends BaseEntity implements UserDetails, Serializable {
 
