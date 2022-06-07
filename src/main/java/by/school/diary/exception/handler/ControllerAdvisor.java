@@ -1,6 +1,7 @@
-package by.school.diary.exception;
+package by.school.diary.exception.handler;
 
 import by.school.diary.dto.response.ErrorResponseDto;
+import by.school.diary.exception.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -70,6 +71,18 @@ public class ControllerAdvisor {
     }
 
     @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(NotCurrentUserException.class)
+    public ErrorResponseDto handleNotCurrentUserException(NotCurrentUserException notCurrentUserException) {
+        return ErrorResponseDto.builder()
+                .title("Not Current User")
+                .message(notCurrentUserException.getMessage())
+                .status(BAD_REQUEST)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(notCurrentUserException))
+                .build();
+    }
+
+    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(UsernameNotFoundException.class)
     public ErrorResponseDto handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException) {
         return ErrorResponseDto.builder()
@@ -114,15 +127,15 @@ public class ControllerAdvisor {
                 .timestamp(now().toString())
                 .build();
     }
-    
-	@ResponseStatus(NOT_FOUND)
-	@ExceptionHandler(ContactNotFoundException.class)
-	public ErrorResponseDto handleContactNotFoundException(ContactNotFoundException contactNotFoundException) {
-		return ErrorResponseDto.builder()
-				.message(contactNotFoundException.getMessage())
-				.status(NOT_FOUND)
-				.timestamp(now().toString())
-				.build();
-	}
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(ContactNotFoundException.class)
+    public ErrorResponseDto handleContactNotFoundException(ContactNotFoundException contactNotFoundException) {
+        return ErrorResponseDto.builder()
+                .message(contactNotFoundException.getMessage())
+                .status(NOT_FOUND)
+                .timestamp(now().toString())
+                .build();
+    }
 
 }

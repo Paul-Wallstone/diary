@@ -4,7 +4,7 @@ import by.school.diary.exception.IdIsNullException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import by.school.diary.dto.request.ContactDto;
+import by.school.diary.dto.ContactDto;
 import by.school.diary.entity.ContactEntity;
 import by.school.diary.exception.ContactNotFoundException;
 import by.school.diary.repository.ContactRepository;

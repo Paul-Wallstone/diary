@@ -13,15 +13,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude = {"student", "user", "contact"})
+@EqualsAndHashCode(callSuper = true, exclude = {"student", "user"})
 public class ParentEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "info_id")
-    @ToString.Exclude
-    private InfoEntity info;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -33,8 +28,4 @@ public class ParentEntity extends BaseEntity implements Serializable {
     @ToString.Exclude
     private StudentEntity student;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact_id")
-    @ToString.Exclude
-    private ContactEntity contact;
 }

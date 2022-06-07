@@ -71,44 +71,44 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         UserEntity user = userRepository.save(UserEntity
                 .builder()
-                .firstName("John")
-                .lastName("Socket")
+//                .firstName("John")
+//                .lastName("Socket")
                 .username("jsocket")
                 .password(encoder.encode("1234567"))
-                .email("jsocket@example.com")
+//                .email("jsocket@example.com")
                 .roles(new HashSet<>(List.of(Role.ROLE_USER, Role.ROLE_ADMIN)))
                 .build());
         log.info("Created: " + user.toString());
 
         UserEntity user2 = userRepository.save(UserEntity
                 .builder()
-                .firstName("Mark")
-                .lastName("Socket")
+//                .firstName("Mark")
+//                .lastName("Socket")
                 .username("msocket")
                 .password(encoder.encode("1234567"))
-                .email("msocket@example.com")
+//                .email("msocket@example.com")
                 .roles(new HashSet<>(List.of(Role.ROLE_USER)))
                 .build());
         log.info("Created: " + user2.toString());
 
         UserEntity user3 = userRepository.save(UserEntity
                 .builder()
-                .firstName("Sue")
-                .lastName("Socket")
+//                .firstName("Sue")
+//                .lastName("Socket")
                 .username("ssocket")
                 .password(encoder.encode("1234567"))
-                .email("ssocket@example.com")
+//                .email("ssocket@example.com")
                 .roles(new HashSet<>(List.of(Role.ROLE_USER)))
                 .build());
         log.info("Created: " + user3.toString());
 
         UserEntity user4 = userRepository.save(UserEntity
                 .builder()
-                .firstName("Kate")
-                .lastName("Socket")
+//                .firstName("Kate")
+//                .lastName("Socket")
                 .username("ksocket")
                 .password(encoder.encode("1234567"))
-                .email("ksocket@example.com")
+//                .email("ksocket@example.com")
                 .roles(new HashSet<>(List.of(Role.ROLE_USER)))
                 .build());
         log.info("Created: " + user4.toString());
@@ -218,10 +218,10 @@ public class DataLoader implements ApplicationRunner {
         student.setParent(parent);
         log.info("Created: " + student.toString());
 
-        student.setInfo(info);
-        student2.setInfo(info2);
-        student.setContact(contact);
-        student2.setContact(contact2);
+        user.setInfo(info);
+        user2.setInfo(info2);
+        user.setContact(contact);
+        user2.setContact(contact2);
 
         PositionEntity position = PositionEntity.builder()
                 .title("Director")

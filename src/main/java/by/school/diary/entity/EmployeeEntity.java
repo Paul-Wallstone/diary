@@ -15,20 +15,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude = {"subjects", "info", "contact", "position", "user", "lessons", "institution"})
+@EqualsAndHashCode(callSuper = true, exclude = {"subjects", "position", "user", "lessons", "institution"})
 public class EmployeeEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "info_id")
-    @ToString.Exclude
-    private InfoEntity info;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contact_id")
-    @ToString.Exclude
-    private ContactEntity contact;
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "position_id")

@@ -1,4 +1,4 @@
-package by.school.diary.dto.request;
+package by.school.diary.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

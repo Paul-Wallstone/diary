@@ -1,10 +1,10 @@
 package by.school.diary.service.impl;
 
 import by.school.diary.domain.Role;
-import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.request.SignUpRequestDto;
-import by.school.diary.dto.response.UserResponseDto;
+import by.school.diary.dto.UserDto;
 import by.school.diary.entity.UserEntity;
+import by.school.diary.exception.NotCurrentUserException;
 import by.school.diary.exception.UserExistException;
 import by.school.diary.exception.UserNotFoundException;
 import by.school.diary.repository.UserRepository;
@@ -32,34 +32,34 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder encoder;
 
     @Override
-    public UserResponseDto getById(Long id) {
+    public UserDto getById(Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return modelMapper.toDto(userEntity);
     }
 
     @Override
-    public List<UserResponseDto> getAll() {
+    public List<UserDto> getAll() {
         List<UserEntity> userEntities = StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
         return userEntities.stream().map(user -> modelMapper.toDto(user)).collect(Collectors.toList());
     }
 
+
     @Override
-    public UserResponseDto save(UserRequestDto userDto) {
+    public UserDto update(UserDto dto) {
+        return update(dto, dto.getId());
+    }
+
+    @Override
+    public UserDto save(UserDto userDto) {
         UserEntity user = modelMapper.toEntity(userDto);
         user.getRoles().add(Role.ROLE_USER);
-        user.setPassword(encoder.encode(userDto.getPassword()));
         UserEntity savedUser = userRepository.save(user);
         return modelMapper.toDto(savedUser);
     }
 
     @Override
-    public UserResponseDto update(UserRequestDto userDto, Long id) {
+    public UserDto update(UserDto userDto, Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-        userEntity.setPassword(encoder.encode(userDto.getPassword()));
-        userEntity.setUsername(userDto.getUsername());
-        userEntity.setFirstName(userDto.getFirstname());
-        userEntity.setLastName(userDto.getLastname());
-        userEntity.setEmail(userDto.getEmail());
         UserEntity updatedUser = userRepository.save(userEntity);
         return modelMapper.toDto(updatedUser);
     }
@@ -86,18 +86,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity updateUserByPrincipal(UserRequestDto userRequestDto, Principal principal) {
+    public UserEntity updateUserByPrincipal(SignUpRequestDto signUpRequestDto, Principal principal) {
         UserEntity userEntity = getUserByPrincipal(principal);
-        userEntity.setFirstName(userRequestDto.getFirstname());
-        userEntity.setLastName(userRequestDto.getLastname());
-        userEntity.setEmail(userRequestDto.getEmail());
-        userEntity.setUsername(userRequestDto.getUsername());
+        userEntity.setUsername(signUpRequestDto.getUsername());
 
         return userRepository.save(userEntity);
     }
 
     @Override
-    public UserResponseDto getCurrentUser(Principal principal) {
+    public UserDto getCurrentUser(Principal principal) {
         return modelMapper.toDto(getUserByPrincipal(principal));
     }
 
@@ -109,4 +106,20 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User not found with username" + username);
         }
     }
+
+    @Override
+    public UserDto updateCurrentByPrincipal(UserDto userDto, Principal principal) {
+        UserEntity userEntity = getUserByPrincipal(principal);
+        if (userEntity.getId().equals(userDto.getId())) {
+            userEntity.setUsername(userDto.getUsername());
+            userEntity.setInfo(modelMapper.toEntity(userDto.getInfo()));
+            userEntity.setContact(modelMapper.toEntity(userDto.getContact()));
+
+            UserEntity user = userRepository.save(userEntity);
+            return modelMapper.toDto(user);
+        }
+        throw new NotCurrentUserException("This is not current user. Please revise your id!");
+    }
+
+
 }

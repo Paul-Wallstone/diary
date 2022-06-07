@@ -16,20 +16,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude = {"group", "parents", "user", "contact"})
+@EqualsAndHashCode(callSuper = true, exclude = {"group", "parents", "user"})
 public class StudentEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "info_id")
-    @ToString.Exclude
-    private InfoEntity info;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contact_id")
-    @ToString.Exclude
-    private ContactEntity contact;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "group_id")

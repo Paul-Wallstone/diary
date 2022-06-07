@@ -4,12 +4,11 @@ import by.school.diary.domain.Mark;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 @Data
-@Table(name = "schedules")
+@Table(name = "student_lesson")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,6 +22,9 @@ public class StudentLessonEntity extends BaseEntity implements Serializable {
 
     @Column(columnDefinition = "text")
     private String notes;
+
+    @Column(columnDefinition = "text")
+    private String task;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
