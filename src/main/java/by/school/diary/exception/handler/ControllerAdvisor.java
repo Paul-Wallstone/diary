@@ -20,6 +20,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestControllerAdvice
 public class ControllerAdvisor {
     public static final String OBJECT_NOT_FOUND = "Resource Not Found";
+    public static final String USER_ALREADY_EXIST = "User Already Exist";
+    public static final String NOT_CURRENT_USER = "Not Current User";
+    public static final String USERNAME_NOT_FOUND = "Username Not Found";
+    public static final String REQUEST_OBJECT_IS_NOT_VALID = "Request Object Is Not Valid";
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
@@ -62,7 +66,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(UserExistException.class)
     public ErrorResponseDto handleUserExistException(UserExistException userExistException) {
         return ErrorResponseDto.builder()
-                .title("User Already Exist")
+                .title(USER_ALREADY_EXIST)
                 .message(userExistException.getMessage())
                 .status(BAD_REQUEST)
                 .timestamp(now().toString())
@@ -74,7 +78,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(NotCurrentUserException.class)
     public ErrorResponseDto handleNotCurrentUserException(NotCurrentUserException notCurrentUserException) {
         return ErrorResponseDto.builder()
-                .title("Not Current User")
+                .title(NOT_CURRENT_USER)
                 .message(notCurrentUserException.getMessage())
                 .status(BAD_REQUEST)
                 .timestamp(now().toString())
@@ -86,7 +90,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ErrorResponseDto handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException) {
         return ErrorResponseDto.builder()
-                .title("Username Not Found")
+                .title(USERNAME_NOT_FOUND)
                 .message(usernameNotFoundException.getMessage())
                 .status(BAD_REQUEST)
                 .timestamp(now().toString())
@@ -98,7 +102,7 @@ public class ControllerAdvisor {
     @ExceptionHandler(ValidationCustomException.class)
     public ErrorResponseDto handleValidationCustomException(ValidationCustomException validationCustomException) {
         return ErrorResponseDto.builder()
-                .title("Request Object Is Not Valid")
+                .title(REQUEST_OBJECT_IS_NOT_VALID)
                 .message(validationCustomException.getMessage())
                 .status(BAD_REQUEST)
                 .timestamp(now().toString())

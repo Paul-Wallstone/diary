@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static by.school.diary.security.SecurityConstants.*;
+
 @Slf4j
 @Configuration
 @EnableWebSecurity
@@ -29,6 +31,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true,
         proxyTargetClass = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+
 
     private final CustomUserDetailsServiceImpl customUserDetailsService;
     private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -65,11 +69,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api-docs/**").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers("/v1/auth/**").permitAll()
+                .antMatchers(API_DOCS).permitAll()
+                .antMatchers(SWAGGER_UI).permitAll()
+                .antMatchers(V_1_AUTH).permitAll()
                 .antMatchers(SecurityConstants.SIGN_UP_URLS).permitAll()
-                .antMatchers("/v1/**").hasAnyRole("ADMIN", "USER", "STUDENT", "DIRECTOR", "PARENT", "TEACHER")
+                .antMatchers(V_1).hasAnyRole(ADMIN, USER, STUDENT, DIRECTOR, PARENT, TEACHER)
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -90,9 +94,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/h2-console/**")
-                .antMatchers("/swagger-ui/**")
-                .antMatchers("/swagger-ui.**");
+                .antMatchers(H_2_CONSOLE)
+                .antMatchers(SWAGGER_UI);
     }
 
     @Bean
