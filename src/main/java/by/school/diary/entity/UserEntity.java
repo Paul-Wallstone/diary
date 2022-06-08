@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -20,21 +19,21 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"info", "contact"})
 @ToString(callSuper = true)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity extends BaseEntity implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "info_id")
+    @ToString.Exclude
+    InfoEntity info;
 
-    @NotBlank(message = "FirstName is mandatory")
-    @Size(min = 2, message = "FirstName must be at least 2 characters long")
-    @Column(nullable = false, length = 50)
-    private String firstName;
-
-    @NotBlank(message = "LastName is mandatory")
-    @Size(min = 2, message = "LastName must be at least 2 characters long")
-    @Column(nullable = false, length = 50)
-    private String lastName;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_id")
+    @ToString.Exclude
+    ContactEntity contact;
 
     @NotBlank(message = "UserName is mandatory")
     @Size(min = 2, message = "UserName must be at least 2 characters long")
@@ -44,10 +43,6 @@ public class UserEntity extends BaseEntity implements UserDetails, Serializable 
     @NotBlank(message = "Password is mandatory")
     @Column(nullable = false)
     private String password;
-
-    @Column(length = 70, unique = true, nullable = true)
-    @Email
-    private String email;
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean verified = true;
@@ -69,10 +64,9 @@ public class UserEntity extends BaseEntity implements UserDetails, Serializable 
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserEntity(Long id, String password, String username, String email, Collection<? extends GrantedAuthority> authorities) {
+    public UserEntity(Long id, String password, String username, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.authorities = authorities;
         this.password = password;
     }
@@ -81,7 +75,6 @@ public class UserEntity extends BaseEntity implements UserDetails, Serializable 
     public String getPassword() {
         return password;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

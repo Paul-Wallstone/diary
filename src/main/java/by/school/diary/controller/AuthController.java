@@ -38,6 +38,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @PreAuthorize("permitAll()")
 @Tag(name = "Authentication Controller", description = "This REST controller provides secure services in the Diary application")
 public class AuthController {
+    public static final String SUCCESS = "success";
+    public static final String TIMESTAMP = "timestamp";
+
     @Autowired
     private ResponseErrorValidator responseErrorValidator;
     @Autowired
@@ -62,24 +65,24 @@ public class AuthController {
         String jwt = SecurityConstants.TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);
 
         return EntityModel.of(new JWTTokenResponseDto(true, jwt),
-                linkTo(methodOn(AuthController.class).authenticateUser(loginRequest,null)).withSelfRel(),
-                linkTo(methodOn(AuthController.class).registerUser(null,null)).withRel("sign-up"));
+                linkTo(methodOn(AuthController.class).authenticateUser(loginRequest, null)).withSelfRel(),
+                linkTo(methodOn(AuthController.class).registerUser(null, null)).withRel("sign-up"));
     }
 
 
     @PostMapping("/sign-up")
     @ResponseStatus(code = HttpStatus.CREATED)
     @Operation(summary = "Provides registration of user in application")
-    public EntityModel<Map<String,Object>> registerUser(@Valid @RequestBody SignUpRequestDto signUpRequest, BindingResult bindingResult) {
-        Map<String, String>  errors = responseErrorValidator.mapValidationService(bindingResult);
+    public EntityModel<Map<String, Object>> registerUser(@Valid @RequestBody SignUpRequestDto signUpRequest, BindingResult bindingResult) {
+        Map<String, String> errors = responseErrorValidator.mapValidationService(bindingResult);
         if (!ObjectUtils.isEmpty(errors))
             throw new ValidationCustomException(errors);
         userService.registerUser(signUpRequest);
-        Map<String,Object> result = new HashMap<>();
-        result.put("success",true);
-        result.put("timestamp",now().toString());
+        Map<String, Object> result = new HashMap<>();
+        result.put(SUCCESS, true);
+        result.put(TIMESTAMP, now().toString());
         return EntityModel.of(result,
-                linkTo(methodOn(AuthController.class).registerUser(null,null)).withSelfRel(),
-                linkTo(methodOn(AuthController.class).authenticateUser(null,null)).withRel("sign-in"));
+                linkTo(methodOn(AuthController.class).registerUser(null, null)).withSelfRel(),
+                linkTo(methodOn(AuthController.class).authenticateUser(null, null)).withRel("sign-in"));
     }
 }

@@ -1,7 +1,7 @@
 package by.school.diary.controller;
 
 
-import by.school.diary.dto.response.UserResponseDto;
+import by.school.diary.dto.UserDto;
 import by.school.diary.service.UserService;
 import by.school.diary.utils.UserModelAssembler;
 import org.junit.jupiter.api.Test;
@@ -46,19 +46,19 @@ class UserControllerTest {
 
     @Test
     void getUserByIdFunctionalTest() {
-        UserResponseDto dto = UserResponseDto
+        UserDto dto = UserDto
                 .builder()
                 .id(1L)
-                .firstName("John")
-                .lastName("Socket")
-                .username("jsocket")
+//                .firstName("John")
+//                .lastName("Socket")
+//                .username("jsocket")
                 .build();
-        EntityModel<UserResponseDto> model = EntityModel.of(dto,
+        EntityModel<UserDto> model = EntityModel.of(dto,
                 linkTo(methodOn(UserController.class).getById(dto.getId())).withSelfRel(),
                 linkTo(methodOn(UserController.class).getAll()).withRel("users"));
         when(userService.getById(1L)).thenReturn(dto);
         when(assembler.toModel(dto)).thenReturn(model);
-        EntityModel<UserResponseDto> actual = userController.getById(1L);
+        EntityModel<UserDto> actual = userController.getById(1L);
         assertEquals(actual, model);
     }
 

@@ -5,7 +5,7 @@ import by.school.diary.dto.response.LessonResponseDto;
 import by.school.diary.entity.StudentLessonEntity;
 import by.school.diary.exception.IdIsNullException;
 import by.school.diary.exception.LessonNotFoundException;
-import by.school.diary.repository.ScheduleRepository;
+import by.school.diary.repository.StudentLessonRepository;
 import by.school.diary.service.LessonService;
 import by.school.diary.utils.CustomModelMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -25,44 +25,44 @@ import java.util.stream.StreamSupport;
 @Service
 public class LessonServiceImpl implements LessonService {
     @Autowired
-    private ScheduleRepository scheduleRepository;
+    private StudentLessonRepository studentLessonRepository;
     @Autowired
     private CustomModelMapper modelMapper;
 
 
     @Override
     public LessonResponseDto getById(Long id) {
-        StudentLessonEntity studentLessonEntity = scheduleRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
+        StudentLessonEntity studentLessonEntity = studentLessonRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
         return modelMapper.toDto(studentLessonEntity);
     }
 
     @Override
     public List<LessonResponseDto> getAll() {
-        Stream<StudentLessonEntity> lessonEntities = StreamSupport.stream(scheduleRepository.findAll().spliterator(), false);
+        Stream<StudentLessonEntity> lessonEntities = StreamSupport.stream(studentLessonRepository.findAll().spliterator(), false);
         return lessonEntities.map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList());
     }
 
     @Override
     public LessonResponseDto save(LessonRequestDto dto) {
         StudentLessonEntity studentLessonEntity = modelMapper.toEntity(dto);
-        StudentLessonEntity savedLesson = scheduleRepository.save(studentLessonEntity);
+        StudentLessonEntity savedLesson = studentLessonRepository.save(studentLessonEntity);
         return modelMapper.toDto(savedLesson);
     }
 
     @Override
     public LessonResponseDto update(LessonRequestDto dto, Long id) {
-        StudentLessonEntity studentLessonEntity = scheduleRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
+        StudentLessonEntity studentLessonEntity = studentLessonRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
 
-        StudentLessonEntity updatedLesson = scheduleRepository.save(studentLessonEntity);
+        StudentLessonEntity updatedLesson = studentLessonRepository.save(studentLessonEntity);
         return modelMapper.toDto(updatedLesson);
     }
 
     @Override
     public LessonResponseDto update(LessonRequestDto dto) {
         if (!ObjectUtils.isEmpty(dto.getId())) {
-            StudentLessonEntity studentLessonEntity = scheduleRepository.findById(dto.getId()).orElseThrow(() -> new LessonNotFoundException(dto.getId()));
+            StudentLessonEntity studentLessonEntity = studentLessonRepository.findById(dto.getId()).orElseThrow(() -> new LessonNotFoundException(dto.getId()));
 
-            StudentLessonEntity updatedLesson = scheduleRepository.save(studentLessonEntity);
+            StudentLessonEntity updatedLesson = studentLessonRepository.save(studentLessonEntity);
             return modelMapper.toDto(updatedLesson);
         } else {
             throw new IdIsNullException("Id is null! Please revise your request!");
@@ -71,8 +71,8 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public void deleteById(Long id) {
-        if (scheduleRepository.existsById(id)) {
-            scheduleRepository.deleteById(id);
+        if (studentLessonRepository.existsById(id)) {
+            studentLessonRepository.deleteById(id);
         } else {
             throw new LessonNotFoundException(id);
         }

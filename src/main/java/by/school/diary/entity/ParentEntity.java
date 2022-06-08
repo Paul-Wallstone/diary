@@ -1,9 +1,15 @@
 package by.school.diary.entity;
 
+import by.school.diary.domain.Role;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Set;
 
 
 @Entity
@@ -11,30 +17,21 @@ import java.io.Serializable;
 @Table(name = "parents")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude = {"student", "user", "contact"})
-public class ParentEntity extends BaseEntity implements Serializable {
+@EqualsAndHashCode(callSuper = true, exclude = {"student"})
+public class ParentEntity extends UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "info_id")
-    @ToString.Exclude
-    private InfoEntity info;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    private UserEntity user;
+    @Builder(builderMethodName = "PBuilder")
+    public ParentEntity(InfoEntity info, ContactEntity contact, @NotBlank(message = "UserName is mandatory") @Size(min = 2, message = "UserName must be at least 2 characters long") String username, @NotBlank(message = "Password is mandatory") String password, boolean verified, boolean locked, boolean credentialsExpired, boolean accountExpired, boolean enabled, Set<Role> roles, Collection<? extends GrantedAuthority> authorities, StudentEntity student) {
+        super(info, contact, username, password, verified, locked, credentialsExpired, accountExpired, enabled, roles, authorities);
+        this.student = student;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
     @ToString.Exclude
     private StudentEntity student;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact_id")
-    @ToString.Exclude
-    private ContactEntity contact;
 }

@@ -1,10 +1,16 @@
 package by.school.diary.entity;
 
+import by.school.diary.domain.Role;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,46 +19,36 @@ import java.util.Set;
 @Table(name = "employees")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude = {"subjects", "info", "contact", "position", "user", "lessons", "institution"})
-public class EmployeeEntity extends BaseEntity implements Serializable {
+@EqualsAndHashCode(callSuper = true, exclude = {"subjects", "position", "lessons", "institution"})
+@PrimaryKeyJoinColumn(name = "id")
+public class EmployeeEntity extends UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "info_id")
-    @ToString.Exclude
-    private InfoEntity info;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contact_id")
-    @ToString.Exclude
-    private ContactEntity contact;
+    @Builder(builderMethodName = "EBuilder")
+    public EmployeeEntity(InfoEntity info, ContactEntity contact, @NotBlank(message = "UserName is mandatory") @Size(min = 2, message = "UserName must be at least 2 characters long") String username, @NotBlank(message = "Password is mandatory") String password, boolean verified, boolean locked, boolean credentialsExpired, boolean accountExpired, boolean enabled, Set<Role> roles, Collection<? extends GrantedAuthority> authorities, PositionEntity position, Set<SubjectEntity> subjects, InstitutionEntity institution) {
+        super(info, contact, username, password, verified, locked, credentialsExpired, accountExpired, enabled, roles, authorities);
+        this.position = position;
+        this.subjects = subjects;
+        this.institution = institution;
+    }
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "position_id")
     @ToString.Exclude
     private PositionEntity position;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    @NotNull
-    @ToString.Exclude
-    private UserEntity user;
-
     @OneToMany(mappedBy = "employee")
     @ToString.Exclude
-    @Builder.Default
     private Set<SubjectEntity> subjects = new HashSet<>();
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},
             mappedBy = "employee", orphanRemoval = true)
     @ToString.Exclude
-    @Builder.Default
     private Set<LessonEntity> lessons = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_id")
     @ToString.Exclude
     private InstitutionEntity institution;
