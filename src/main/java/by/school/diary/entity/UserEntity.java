@@ -1,7 +1,6 @@
 package by.school.diary.entity;
 
 import by.school.diary.domain.Role;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +21,7 @@ import java.util.Set;
 @Builder
 @EqualsAndHashCode(callSuper = true,exclude = {"info","contact"})
 @ToString(callSuper = true)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity extends BaseEntity implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -75,7 +75,6 @@ public class UserEntity extends BaseEntity implements UserDetails, Serializable 
     public String getPassword() {
         return password;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {
