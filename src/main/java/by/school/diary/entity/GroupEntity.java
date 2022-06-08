@@ -32,7 +32,7 @@ public class GroupEntity extends BaseEntity implements Serializable {
     @ToString.Exclude
     private Set<StudentEntity> students = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_id")
     @ToString.Exclude
     private InstitutionEntity institution;

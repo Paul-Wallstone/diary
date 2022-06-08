@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(callSuper = true,exclude = {"info","contact"})
+@EqualsAndHashCode(callSuper = true, exclude = {"info", "contact"})
 @ToString(callSuper = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity extends BaseEntity implements UserDetails, Serializable {

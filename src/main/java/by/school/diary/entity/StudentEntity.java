@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,9 +30,9 @@ public class StudentEntity extends UserEntity implements Serializable {
     public StudentEntity(InfoEntity info, ContactEntity contact, @NotBlank(message = "UserName is mandatory") @Size(min = 2, message = "UserName must be at least 2 characters long") String username, @NotBlank(message = "Password is mandatory") String password, boolean verified, boolean locked, boolean credentialsExpired, boolean accountExpired, boolean enabled, Set<Role> roles, Collection<? extends GrantedAuthority> authorities, GroupEntity group) {
         super(info, contact, username, password, verified, locked, credentialsExpired, accountExpired, enabled, roles, authorities);
         this.group = group;
-     }
+    }
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     @ToString.Exclude
     private GroupEntity group;
@@ -56,7 +57,7 @@ public class StudentEntity extends UserEntity implements Serializable {
         this.parents.remove(parent);
     }
 
-    public void removeParent() {
+    public void removeParents() {
         for (ParentEntity parent : this.parents) {
             parent.setStudent(null);
         }

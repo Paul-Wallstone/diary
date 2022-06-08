@@ -4,6 +4,6 @@ import by.school.diary.entity.StudentLessonEntity;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 
-public interface ScheduleRepository extends PagingAndSortingRepository<StudentLessonEntity, Long> {
+public interface StudentLessonRepository extends PagingAndSortingRepository<StudentLessonEntity, Long> {
 
 }

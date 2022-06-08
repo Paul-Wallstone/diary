@@ -25,6 +25,7 @@ import java.util.Set;
 public class EmployeeEntity extends UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Builder(builderMethodName = "EBuilder")
     public EmployeeEntity(InfoEntity info, ContactEntity contact, @NotBlank(message = "UserName is mandatory") @Size(min = 2, message = "UserName must be at least 2 characters long") String username, @NotBlank(message = "Password is mandatory") String password, boolean verified, boolean locked, boolean credentialsExpired, boolean accountExpired, boolean enabled, Set<Role> roles, Collection<? extends GrantedAuthority> authorities, PositionEntity position, Set<SubjectEntity> subjects, InstitutionEntity institution) {
         super(info, contact, username, password, verified, locked, credentialsExpired, accountExpired, enabled, roles, authorities);
@@ -47,7 +48,7 @@ public class EmployeeEntity extends UserEntity implements Serializable {
     @ToString.Exclude
     private Set<LessonEntity> lessons = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "institution_id")
     @ToString.Exclude
     private InstitutionEntity institution;

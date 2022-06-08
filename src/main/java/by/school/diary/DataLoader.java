@@ -26,7 +26,7 @@ public class DataLoader implements ApplicationRunner {
     UserRepository userRepository;
     ContactRepository contactRepository;
     GroupRepository groupRepository;
-    ScheduleRepository scheduleRepository;
+    StudentLessonRepository studentLessonRepository;
     StudentRepository studentRepository;
     ParentRepository parentRepository;
     PositionRepository positionRepository;
@@ -37,12 +37,13 @@ public class DataLoader implements ApplicationRunner {
     InstitutionRepository institutionRepository;
     LessonRepository lessonRepository;
 
+
     @Autowired
     public DataLoader(UserRepository userRepository,
                       InstitutionRepository institutionRepository,
                       ContactRepository contactRepository,
                       GroupRepository groupRepository,
-                      ScheduleRepository scheduleRepository,
+                      StudentLessonRepository studentLessonRepository,
                       StudentRepository studentRepository,
                       ParentRepository parentRepository,
                       PositionRepository positionRepository,
@@ -54,7 +55,7 @@ public class DataLoader implements ApplicationRunner {
         this.userRepository = userRepository;
         this.contactRepository = contactRepository;
         this.groupRepository = groupRepository;
-        this.scheduleRepository = scheduleRepository;
+        this.studentLessonRepository = studentLessonRepository;
         this.studentRepository = studentRepository;
         this.parentRepository = parentRepository;
         this.positionRepository = positionRepository;
@@ -104,7 +105,6 @@ public class DataLoader implements ApplicationRunner {
                 .password(encoder.encode("1234567"))
                 .roles(new HashSet<>(List.of(Role.ROLE_USER)))
                 .build();
-
         employeeRepository.save(employee);
         log.info("Created: " + employee.toString());
 
@@ -125,18 +125,43 @@ public class DataLoader implements ApplicationRunner {
         lesson.setEmployee(employee);
         lessonRepository.save(lesson);
 
-
-        StudentLessonEntity studentLessonEntity = StudentLessonEntity.builder()
-                .lesson(lesson)
+        LessonEntity lesson2 = LessonEntity.builder()
+                .date(LocalDate.of(2022, 6, 5))
+                .timeFrom(LocalTime.of(12, 0))
+                .timeTo(LocalTime.of(12, 45))
+                .subject(subject)
+                .group(group)
                 .build();
-        studentLessonEntity.setStudent(student);
+        lesson2.setEmployee(employee);
+        lessonRepository.save(lesson2);
 
-        StudentLessonEntity studentLessonEntity2 = StudentLessonEntity.builder()
+        StudentLessonEntity studentLesson = StudentLessonEntity.builder()
                 .lesson(lesson)
+                .student(student)
                 .build();
-        studentLessonEntity2.setStudent(student2);
-        log.info("Created: " + studentLessonEntity.toString());
-        log.info("Created: " + studentLessonEntity2.toString());
+        studentLessonRepository.save(studentLesson);
+
+        StudentLessonEntity studentLesson3 = StudentLessonEntity.builder()
+                .lesson(lesson)
+                .student(student2)
+                .build();
+        studentLessonRepository.save(studentLesson3);
+
+        StudentLessonEntity studentLesson2 = StudentLessonEntity.builder()
+                .lesson(lesson2)
+                .student(student)
+                .build();
+        studentLessonRepository.save(studentLesson2);
+
+        StudentLessonEntity studentLesson4 = StudentLessonEntity.builder()
+                .lesson(lesson2)
+                .student(student2)
+                .build();
+        studentLessonRepository.save(studentLesson4);
+
+
+        log.info("Created: " + studentLesson.toString());
+        log.info("Created: " + studentLesson2.toString());
 
         ContactEntity contact = ContactEntity.builder()
                 .address("some address")
@@ -163,6 +188,9 @@ public class DataLoader implements ApplicationRunner {
         log.info("Created: " + contact3.toString());
 
         InfoEntity info = InfoEntity.builder()
+                .firstName("Bname1")
+                .lastName("lastName1")
+                .email("name1@gmail.com")
                 .birthday(LocalDate.of(2000, 12, 12))
                 .sex(Sex.MALE)
                 .bio("some bio")
@@ -170,6 +198,9 @@ public class DataLoader implements ApplicationRunner {
         log.info("Created: " + info.toString());
 
         InfoEntity info2 = InfoEntity.builder()
+                .firstName("Dname2")
+                .lastName("lastName2")
+                .email("name2@gmail.com")
                 .birthday(LocalDate.of(2000, 12, 12))
                 .sex(Sex.MALE)
                 .bio("some bio2")
@@ -177,6 +208,9 @@ public class DataLoader implements ApplicationRunner {
         log.info("Created: " + info2.toString());
 
         InfoEntity info3 = InfoEntity.builder()
+                .firstName("Fname3")
+                .lastName("lastName3")
+                .email("name3@gmail.com")
                 .birthday(LocalDate.of(2000, 12, 12))
                 .sex(Sex.FEMALE)
                 .bio("some bio3")
@@ -195,15 +229,17 @@ public class DataLoader implements ApplicationRunner {
 
         student.setInfo(info);
         student2.setInfo(info2);
+        employee.setInfo(info3);
         student.setContact(contact);
         student2.setContact(contact2);
+        employee.setContact(contact3);
 
         PositionEntity position = PositionEntity.builder()
                 .title("Director")
                 .build();
         employee.setPosition(position);
 
-        studentLessonEntity2.setMark(Mark.EIGHT);
+        studentLesson2.setMark(Mark.EIGHT);
 
         InstitutionEntity institution = InstitutionEntity.builder()
                 .title("School")

@@ -1,5 +1,6 @@
 package by.school.diary.entity;
 
+import by.school.diary.domain.Mark;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -16,7 +19,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Builder
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true, exclude = {"subject", "group", "employee"})
+@EqualsAndHashCode(callSuper = true, exclude = {"subject", "group", "employee", "lessons"})
 public class LessonEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,11 +47,17 @@ public class LessonEntity extends BaseEntity implements Serializable {
     @ToString.Exclude
     private GroupEntity group;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     @NotNull
     @ToString.Exclude
     private EmployeeEntity employee;
+
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            mappedBy = "lesson")
+    @ToString.Exclude
+    @Builder.Default
+     private Set<StudentLessonEntity> lessons = new HashSet<>();
 
     public void setEmployee(EmployeeEntity employee) {
         this.employee = employee;
