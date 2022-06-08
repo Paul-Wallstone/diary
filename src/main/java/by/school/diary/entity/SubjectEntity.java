@@ -1,27 +1,30 @@
 package by.school.diary.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.io.Serializable;
 
-@Entity(name = "subjects")
+@Entity
 @Data
-@Table
+@Table(name = "subjects")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SubjectEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class SubjectEntity extends BaseEntity implements Serializable {
 
-    @ManyToMany(mappedBy = "subjects")
-    private Set<EmployeeEntity> employees;
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false, length = 125)
     private String title;
+
+    @Column(length = 125)
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    @ToString.Exclude
+    private EmployeeEntity employee;
 }

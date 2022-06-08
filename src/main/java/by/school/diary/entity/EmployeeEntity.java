@@ -1,44 +1,87 @@
 package by.school.diary.entity;
 
-import by.school.diary.domain.Sex;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import by.school.diary.domain.Role;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "employees")
+@Entity
 @Data
-@Table
+@Table(name = "employees")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class EmployeeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"subjects", "position", "lessons", "institution"})
+@PrimaryKeyJoinColumn(name = "id")
+public class EmployeeEntity extends UserEntity implements Serializable {
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
-    @Column(nullable = false)
-    LocalDateTime birthday;
+    private static final long serialVersionUID = 1L;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 6)
-    private Sex sex;
+    @Builder(builderMethodName = "EBuilder")
+    public EmployeeEntity(InfoEntity info, ContactEntity contact, @NotBlank(message = "UserName is mandatory") @Size(min = 2, message = "UserName must be at least 2 characters long") String username, @NotBlank(message = "Password is mandatory") String password, boolean verified, boolean locked, boolean credentialsExpired, boolean accountExpired, boolean enabled, Set<Role> roles, Collection<? extends GrantedAuthority> authorities, PositionEntity position, Set<SubjectEntity> subjects, InstitutionEntity institution) {
+        super(info, contact, username, password, verified, locked, credentialsExpired, accountExpired, enabled, roles, authorities);
+        this.position = position;
+        this.subjects = subjects;
+        this.institution = institution;
+    }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<SubjectEntity> subjects;
-
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "position_id")
+    @ToString.Exclude
     private PositionEntity position;
 
-    @OneToOne
-    private UserEntity user;
-    
-    @OneToOne
-    private ContactEntity contact;
+    @OneToMany(mappedBy = "employee")
+    @ToString.Exclude
+    private Set<SubjectEntity> subjects = new HashSet<>();
+
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            mappedBy = "employee", orphanRemoval = true)
+    @ToString.Exclude
+    private Set<LessonEntity> lessons = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "institution_id")
+    @ToString.Exclude
+    private InstitutionEntity institution;
+
+    public void setSubject(SubjectEntity subject) {
+        this.subjects.add(subject);
+        subject.setEmployee(this);
+    }
+
+    public void removeSubject(SubjectEntity subject) {
+        this.subjects.remove(subject);
+        subject.setEmployee(null);
+    }
+
+    public void removeSubjects() {
+        for (SubjectEntity subject : this.subjects) {
+            subject.setEmployee(null);
+        }
+    }
+
+    public void setLesson(LessonEntity lesson) {
+        this.lessons.add(lesson);
+        lesson.setEmployee(this);
+    }
+
+    public void removeLesson(LessonEntity lesson) {
+        this.lessons.remove(lesson);
+        lesson.setEmployee(null);
+    }
+
+    public void removeLessons() {
+        for (LessonEntity lesson : this.lessons) {
+            lesson.setEmployee(null);
+        }
+    }
 }

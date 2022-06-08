@@ -1,22 +1,21 @@
 package by.school.diary.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity(name = "positions")
+@Entity
 @Data
-@Table
+@Table(name = "positions")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PositionEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class PositionEntity extends BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false, length = 70)
     private String title;

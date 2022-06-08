@@ -10,9 +10,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static by.school.diary.security.SecurityConstants.*;
+
 @Slf4j
 @Component
 public class JWTTokenProvider {
+
+
+
     public String generateToken(Authentication authentication) {
         UserEntity user = (UserEntity) authentication.getPrincipal();
         Date now = new Date(System.currentTimeMillis());
@@ -21,10 +26,8 @@ public class JWTTokenProvider {
         String userId = Long.toString(user.getId());
 
         Map<String, Object> claimsMap = new HashMap<>();
-        claimsMap.put("id", userId);
-        claimsMap.put("username", user.getUsername());
-        claimsMap.put("firstname", user.getFirstName());
-        claimsMap.put("lastname", user.getLastName());
+        claimsMap.put(ID, userId);
+        claimsMap.put(USERNAME, user.getUsername());
 
         return Jwts.builder()
                 .setSubject(userId)
@@ -56,7 +59,7 @@ public class JWTTokenProvider {
                 .setSigningKey(SecurityConstants.SECRET)
                 .parseClaimsJws(token)
                 .getBody();
-        String id = (String) claims.get("id");
+        String id = (String) claims.get(ID);
         return Long.parseLong(id);
     }
 

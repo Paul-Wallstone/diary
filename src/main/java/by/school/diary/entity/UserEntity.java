@@ -1,41 +1,39 @@
 package by.school.diary.entity;
 
 import by.school.diary.domain.Role;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "users")
-@Table()
+@Entity()
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserEntity implements UserDetails {
+@EqualsAndHashCode(callSuper = true, exclude = {"info", "contact"})
+@ToString(callSuper = true)
+@Inheritance(strategy = InheritanceType.JOINED)
+public class UserEntity extends BaseEntity implements UserDetails, Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private static final long serialVersionUID = 1L;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "info_id")
+    @ToString.Exclude
+    InfoEntity info;
 
-    @NotBlank(message = "FirstName is mandatory")
-    @Size(min = 2, message = "FirstName must be at least 2 characters long")
-    @Column(nullable = false, length = 50)
-    private String firstName;
-
-    @NotBlank(message = "LastName is mandatory")
-    @Size(min = 2, message = "LastName must be at least 2 characters long")
-    @Column(nullable = false, length = 50)
-    private String lastName;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact_id")
+    @ToString.Exclude
+    ContactEntity contact;
 
     @NotBlank(message = "UserName is mandatory")
     @Size(min = 2, message = "UserName must be at least 2 characters long")
@@ -45,10 +43,6 @@ public class UserEntity implements UserDetails {
     @NotBlank(message = "Password is mandatory")
     @Column(nullable = false)
     private String password;
-
-    @Column(length = 70, unique = true, nullable = true)
-    @Email
-    private String email;
 
     @Column(nullable = false, columnDefinition = "boolean default true")
     private boolean verified = true;
@@ -67,31 +61,20 @@ public class UserEntity implements UserDetails {
     @Column(name = "role_id")
     private Set<Role> roles = new HashSet<>();
 
-    @JsonFormat(pattern = "yyyy-mm-dd HH:mm:ss")
-    @Column(nullable = false, updatable = false)
-    LocalDateTime createdDate;
-
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserEntity(Long id, String password, String username, String email, Collection<? extends GrantedAuthority> authorities) {
+    public UserEntity(Long id, String password, String username, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.authorities = authorities;
         this.password = password;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdDate = LocalDateTime.now();
     }
 
     @Override
     public String getPassword() {
         return password;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

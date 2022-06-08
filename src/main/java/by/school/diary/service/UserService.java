@@ -1,27 +1,18 @@
 package by.school.diary.service;
 
-import by.school.diary.dto.request.UserRequestDto;
 import by.school.diary.dto.request.SignUpRequestDto;
-import by.school.diary.dto.response.UserResponseDto;
+import by.school.diary.dto.UserDto;
 import by.school.diary.entity.UserEntity;
 
 import java.security.Principal;
-import java.util.List;
 
-public interface UserService {
-    UserResponseDto getById(Long id);
+public interface UserService extends CRUDService<UserDto, UserDto> {
 
-    List<UserResponseDto> getAll();
-
-    UserResponseDto save(UserRequestDto userDto);
-
-    UserResponseDto update(UserRequestDto userDto, Long id);
-
-    void deleteById(Long id);
+    UserDto updateCurrentByPrincipal(UserDto userDto, Principal principal);
 
     void registerUser(SignUpRequestDto signUpRequestDto);
 
-    UserEntity updateUserByPrincipal(UserRequestDto userRequestDto, Principal principal);
+    UserEntity updateUserByPrincipal(SignUpRequestDto signUpRequestDto, Principal principal);
 
-    UserResponseDto getCurrentUser(Principal principal);
+    UserDto getCurrentUser(Principal principal);
 }

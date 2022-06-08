@@ -1,30 +1,56 @@
 package by.school.diary.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "groups")
+@Entity
 @Data
-@Table
+@Table(name = "groups")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GroupEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"employee", "students", "institution"})
+public class GroupEntity extends BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false, length = 30)
     private String title;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "employee_id")
+    @ToString.Exclude
     private EmployeeEntity employee;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<StudentEntity> students;
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "group", orphanRemoval = true)
+    @ToString.Exclude
+    private Set<StudentEntity> students = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "institution_id")
+    @ToString.Exclude
+    private InstitutionEntity institution;
+
+
+    public void addStudent(StudentEntity student) {
+        this.students.add(student);
+        student.setGroup(this);
+    }
+
+    public void removeStudent(StudentEntity student) {
+        student.setGroup(null);
+        this.students.remove(student);
+    }
+
+    public void removeStudents() {
+        for (StudentEntity student : this.students) {
+            student.setGroup(null);
+        }
+    }
 }
