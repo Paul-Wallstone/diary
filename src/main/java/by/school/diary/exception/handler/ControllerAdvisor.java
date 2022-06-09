@@ -136,10 +136,23 @@ public class ControllerAdvisor {
     @ExceptionHandler(ContactNotFoundException.class)
     public ErrorResponseDto handleContactNotFoundException(ContactNotFoundException contactNotFoundException) {
         return ErrorResponseDto.builder()
+                .title(OBJECT_NOT_FOUND)
                 .message(contactNotFoundException.getMessage())
                 .status(NOT_FOUND)
                 .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(contactNotFoundException))
                 .build();
     }
 
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(InfoNotFoundException.class)
+    public ErrorResponseDto handInfoNotFoundException(InfoNotFoundException infoNotFoundException) {
+        return ErrorResponseDto.builder()
+                .title(OBJECT_NOT_FOUND)
+                .message(infoNotFoundException.getMessage())
+                .status(NOT_FOUND)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(infoNotFoundException))
+                .build();
+    }
 }

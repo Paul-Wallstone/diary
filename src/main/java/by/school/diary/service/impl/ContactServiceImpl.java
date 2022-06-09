@@ -21,7 +21,6 @@ import java.util.stream.StreamSupport;
 @Slf4j
 @Service
 public class ContactServiceImpl implements ContactService {
-
     @Autowired
     private ContactRepository contactRepository;
     @Autowired
@@ -40,20 +39,20 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public ContactDto save(ContactDto contactDto) {
-        ContactEntity contactEntity = modelMapper.toEntity(contactDto);
+    public ContactDto save(ContactDto dto) {
+        ContactEntity contactEntity = modelMapper.toEntity(dto);
         ContactEntity savedContactEntity = contactRepository.save(contactEntity);
         return modelMapper.toDto(savedContactEntity);
     }
 
     @Override
-    public ContactDto update(ContactDto contactDto, Long id) {
+    public ContactDto update(ContactDto dto, Long id) {
         if (!ObjectUtils.isEmpty(id)) {
             ContactEntity contactEntity = contactRepository.findById(id).orElseThrow(() -> new ContactNotFoundException(id));
-            contactEntity.setAddress(contactDto.getAddress());
-            contactEntity.setCity(contactDto.getCity());
-            contactEntity.setPostcode(contactDto.getPostcode());
-            contactEntity.setPhone(contactDto.getPhone());
+            contactEntity.setAddress(dto.getAddress());
+            contactEntity.setCity(dto.getCity());
+            contactEntity.setPostcode(dto.getPostcode());
+            contactEntity.setPhone(dto.getPhone());
             ContactEntity updatedContactEntity = contactRepository.save(contactEntity);
             return modelMapper.toDto(updatedContactEntity);
         }
@@ -68,16 +67,6 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void delete(ContactDto contactDto) {
-        ContactEntity contactEntity = modelMapper.toEntity(contactDto);
-        if (contactRepository.findById(contactEntity.getId()).isPresent()) {
-            contactRepository.delete(contactEntity);
-        } else {
-            throw new ContactNotFoundException(contactEntity.getId());
-        }
-    }
-
-    @Override
     public void deleteById(Long id) {
         if (contactRepository.existsById(id)) {
             contactRepository.deleteById(id);
@@ -86,4 +75,13 @@ public class ContactServiceImpl implements ContactService {
         }
     }
 
+    @Override
+    public void delete(ContactDto dto) {
+        ContactEntity contactEntity = modelMapper.toEntity(dto);
+        if (contactRepository.findById(contactEntity.getId()).isPresent()) {
+            contactRepository.delete(contactEntity);
+        } else {
+            throw new ContactNotFoundException(contactEntity.getId());
+        }
+    }
 }
