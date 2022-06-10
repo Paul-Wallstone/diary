@@ -25,7 +25,7 @@ public class StudentLessonEntity extends BaseEntity implements Serializable {
         this.student = student;
         this.student.getLessons().add(this);
         this.lesson = lesson;
-        this.lesson.getLessons().add(this);
+        this.lesson.getStudentLessons().add(this);
     }
 
     private Mark mark;

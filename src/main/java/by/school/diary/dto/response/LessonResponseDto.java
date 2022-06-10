@@ -1,23 +1,24 @@
 package by.school.diary.dto.response;
 
-import by.school.diary.domain.Mark;
 import by.school.diary.entity.EmployeeEntity;
 import by.school.diary.entity.GroupEntity;
 import by.school.diary.entity.SubjectEntity;
 import lombok.Data;
 
-import java.util.Date;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 public class LessonResponseDto {
     private Long id;
 
-    private Date date;
+    private LocalDate date;
 
-    private Mark mark;
+    private LocalTime timeFrom;
 
-    private String message;
+    private LocalTime timeTo;
+    
+    private String description;
 
     private SubjectEntity subject;
 
