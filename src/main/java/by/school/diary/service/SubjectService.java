@@ -1,20 +1,30 @@
 package by.school.diary.service;
 
-import by.school.diary.dto.EmployeeDto;
-import by.school.diary.dto.SubjectDto;
-import by.school.diary.entity.SubjectEntity;
+import by.school.diary.dto.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
-//TODO реализовать интерфейс и DTO
-public interface SubjectService extends CRUDService<SubjectDto, SubjectEntity> {
+
+//TODO реализовать интерфейс и DTO + свои методы
+public interface SubjectService extends CRUDService<SubjectDto, SubjectDto> {
 
     void delete(SubjectDto subjectDto);
 
-    void deleteAllByEmployee(EmployeeDto employeeDto);
+    List<LessonDto> lessonsBy(SubjectDto subjectDto);
 
-    List<SubjectDto> findAllByEmployee(EmployeeDto employeeDto);
+    List<LessonDto> lessonsBy(SubjectDto subjectDto, LocalDate from, LocalDate to);
 
-    List<SubjectDto> findAllByEmployeeId(Long employeeId);
+    List<LessonDto> lessonsBy(SubjectDto subjectDto, GroupDto groupDto, LocalDate from, LocalDate to);
+
+    List<LessonDto> lessonsBy(SubjectDto subjectDto, StudentDto studentDto, LocalDate from, LocalDate to);
+
+    List<StudentLessonDto> studentLessonsBy(SubjectDto subjectDto);
+
+    List<StudentLessonDto> studentLessonsBy(SubjectDto subjectDto, LocalDate from, LocalDate to);
+
+    List<StudentLessonDto> studentLessonsBy(SubjectDto subjectDto, GroupDto groupDto, LocalDate from, LocalDate to);
+
+    List<StudentLessonDto> studentLessonsBy(SubjectDto subjectDto, StudentDto studentDto, LocalDate from, LocalDate to);
 
 }
