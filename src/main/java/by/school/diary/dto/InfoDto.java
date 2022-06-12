@@ -17,7 +17,6 @@ import java.time.LocalDate;
 
 @Data
 public class InfoDto {
-
     private Long id;
 
     @NotBlank(message = "FirstName is mandatory")

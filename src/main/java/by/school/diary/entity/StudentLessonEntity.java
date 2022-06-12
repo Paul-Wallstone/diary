@@ -28,6 +28,8 @@ public class StudentLessonEntity extends BaseEntity implements Serializable {
         this.lesson.getStudentLessons().add(this);
     }
 
+    @Column(name = "mark", nullable = true)
+    @Enumerated(EnumType.STRING)
     private Mark mark;
 
     @Column(columnDefinition = "text")

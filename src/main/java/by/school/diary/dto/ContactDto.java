@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class ContactDto {
-
     Long id;
 
     @NotBlank(message = "City is mandatory")
