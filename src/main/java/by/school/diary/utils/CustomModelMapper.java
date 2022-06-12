@@ -1,6 +1,7 @@
 package by.school.diary.utils;
 
 import by.school.diary.dto.InfoDto;
+import by.school.diary.dto.StudentLessonDto;
 import by.school.diary.dto.request.LessonRequestDto;
 import by.school.diary.dto.ContactDto;
 import by.school.diary.dto.request.SignUpRequestDto;
@@ -8,6 +9,7 @@ import by.school.diary.dto.response.LessonResponseDto;
 import by.school.diary.dto.UserDto;
 import by.school.diary.entity.InfoEntity;
 import by.school.diary.entity.LessonEntity;
+import by.school.diary.entity.StudentLessonEntity;
 import by.school.diary.entity.ContactEntity;
 import by.school.diary.entity.UserEntity;
 import org.modelmapper.ModelMapper;
@@ -70,5 +72,13 @@ public class CustomModelMapper {
 
     public InfoDto toDto(InfoEntity entity) {
         return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, InfoDto.class) : null;
+    }
+    
+    public StudentLessonEntity toEntity(StudentLessonDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, StudentLessonEntity.class) : null;
+    }
+
+    public StudentLessonDto toDto(StudentLessonEntity entity) {
+        return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, StudentLessonDto.class) : null;
     }
 }

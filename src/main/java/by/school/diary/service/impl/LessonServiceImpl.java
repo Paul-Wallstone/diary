@@ -33,8 +33,8 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public LessonResponseDto getById(Long id) {
-        LessonEntity studentLessonEntity = lessonRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
-        return modelMapper.toDto(studentLessonEntity);
+        LessonEntity lessonEntity = lessonRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
+        return modelMapper.toDto(lessonEntity);
     }
 
     @Override
@@ -53,7 +53,6 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public LessonResponseDto update(LessonRequestDto dto, Long id) {
         LessonEntity lessonEntity = lessonRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
-
         LessonEntity updatedLesson = lessonRepository.save(lessonEntity);
         return modelMapper.toDto(updatedLesson);
     }
@@ -62,7 +61,6 @@ public class LessonServiceImpl implements LessonService {
     public LessonResponseDto update(LessonRequestDto dto) {
         if (!ObjectUtils.isEmpty(dto.getId())) {
             LessonEntity lessonEntity = lessonRepository.findById(dto.getId()).orElseThrow(() -> new LessonNotFoundException(dto.getId()));
-
             LessonEntity updatedLesson = lessonRepository.save(lessonEntity);
             return modelMapper.toDto(updatedLesson);
         } else {
