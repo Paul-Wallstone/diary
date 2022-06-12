@@ -33,7 +33,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @CrossOrigin
 @RestController
-
 @RequestMapping(path = "/v1/auth", produces = "application/json")
 @PreAuthorize("permitAll()")
 @Tag(name = "Authentication Controller", description = "This REST controller provides secure services in the Diary application")
