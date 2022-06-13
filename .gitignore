@@ -21,6 +21,7 @@ target/
 
 ### Eclipse IDE ###
 bin/
+.dbeaver/
 
 ### NetBeans ###
 /nbproject/private/

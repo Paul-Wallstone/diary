@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import by.school.diary.dto.EmployeeDto;
+import by.school.diary.dto.StudentDto;
 import by.school.diary.dto.StudentLessonDto;
 import by.school.diary.entity.StudentLessonEntity;
 import by.school.diary.exception.IdIsNullException;
@@ -16,9 +18,7 @@ import by.school.diary.exception.StudentLessonNotFoundException;
 import by.school.diary.repository.StudentLessonRepository;
 import by.school.diary.service.StudentLessonService;
 import by.school.diary.utils.CustomModelMapper;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class StudentLessonServiceImpl implements StudentLessonService {
 	@Autowired
@@ -74,6 +74,26 @@ public class StudentLessonServiceImpl implements StudentLessonService {
 		} else {
 			throw new StudentLessonNotFoundException(id);
 		}
+	}
+
+	@Override
+	public List<StudentDto> studentsBy(StudentLessonDto studentLessonDto) {
+		return null;
+	}
+
+	@Override
+	public List<StudentDto> studentsById(Long id) {
+		return null;
+	}
+
+	@Override
+	public EmployeeDto employeeBy(StudentLessonDto studentLessonDto) {
+		return null;
+	}
+
+	@Override
+	public EmployeeDto employeeById(Long id) {
+		return null;
 	}
 
 }

@@ -1,14 +1,12 @@
 package by.school.diary.service.impl;
 
-import by.school.diary.dto.request.LessonRequestDto;
-import by.school.diary.dto.response.LessonResponseDto;
+import by.school.diary.dto.LessonDto;
 import by.school.diary.entity.LessonEntity;
 import by.school.diary.exception.IdIsNullException;
 import by.school.diary.exception.LessonNotFoundException;
 import by.school.diary.repository.LessonRepository;
 import by.school.diary.service.LessonService;
 import by.school.diary.utils.CustomModelMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,33 +31,33 @@ public class LessonServiceImpl implements LessonService {
 
 
     @Override
-    public LessonResponseDto getById(Long id) {
+    public LessonDto getById(Long id) {
         LessonEntity lessonEntity = lessonRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
         return modelMapper.toDto(lessonEntity);
     }
 
     @Override
-    public List<LessonResponseDto> getAll() {
+    public List<LessonDto> getAll() {
         Stream<LessonEntity> lessonEntities = StreamSupport.stream(lessonRepository.findAll().spliterator(), false);
         return lessonEntities.map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList());
     }
 
     @Override
-    public LessonResponseDto save(LessonRequestDto dto) {
+    public LessonDto save(LessonDto dto) {
         LessonEntity lessonEntity = modelMapper.toEntity(dto);
         LessonEntity savedLesson = lessonRepository.save(lessonEntity);
         return modelMapper.toDto(savedLesson);
     }
 
     @Override
-    public LessonResponseDto update(LessonRequestDto dto, Long id) {
+    public LessonDto update(LessonDto dto, Long id) {
         LessonEntity lessonEntity = lessonRepository.findById(id).orElseThrow(() -> new LessonNotFoundException(id));
         LessonEntity updatedLesson = lessonRepository.save(lessonEntity);
         return modelMapper.toDto(updatedLesson);
     }
 
     @Override
-    public LessonResponseDto update(LessonRequestDto dto) {
+    public LessonDto update(LessonDto dto) {
         if (!ObjectUtils.isEmpty(dto.getId())) {
             LessonEntity lessonEntity = lessonRepository.findById(dto.getId()).orElseThrow(() -> new LessonNotFoundException(dto.getId()));
             LessonEntity updatedLesson = lessonRepository.save(lessonEntity);
@@ -79,33 +77,33 @@ public class LessonServiceImpl implements LessonService {
     }
 
 	@Override
-	public Page<LessonResponseDto> findAllByDateBetween(Date from, Date to, Pageable pageable) {
+	public Page<LessonDto> findAllByDateBetween(Date from, Date to, Pageable pageable) {
 		Page<LessonEntity> lessons = lessonRepository.findAllByDateBetween(from, to, pageable);
-		return new PageImpl<LessonResponseDto>(
+		return new PageImpl<LessonDto>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
 				pageable, lessons.getTotalElements());
 	}
 
     @Override
-    public Page<LessonResponseDto> findAllByDateBetweenAndEmployeeId(Date from, Date to, Long employeeId, Pageable pageable) {
+    public Page<LessonDto> findAllByDateBetweenAndEmployeeId(Date from, Date to, Long employeeId, Pageable pageable) {
     	Page<LessonEntity> lessons = lessonRepository.findAllByDateBetweenAndEmployeeId(from, to, employeeId, pageable);
-		return new PageImpl<LessonResponseDto>(
+		return new PageImpl<LessonDto>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
 				pageable, lessons.getTotalElements());
     }
 
     @Override
-    public Page<LessonResponseDto> findAllByDateBetweenAndSubjectId(Date from, Date to, Long subjectId, Pageable pageable) {
+    public Page<LessonDto> findAllByDateBetweenAndSubjectId(Date from, Date to, Long subjectId, Pageable pageable) {
     	Page<LessonEntity> lessons = lessonRepository.findAllByDateBetweenAndSubjectId(from, to, subjectId, pageable);
-		return new PageImpl<LessonResponseDto>(
+		return new PageImpl<LessonDto>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
 				pageable, lessons.getTotalElements());
     }
 
     @Override
-    public Page<LessonResponseDto> findAllByDateBetweenAndGroupId(Date from, Date to, Long groupId, Pageable pageable) {
+    public Page<LessonDto> findAllByDateBetweenAndGroupId(Date from, Date to, Long groupId, Pageable pageable) {
     	Page<LessonEntity> lessons = lessonRepository.findAllByDateBetweenAndGroupId(from, to, groupId, pageable);
-		return new PageImpl<LessonResponseDto>(
+		return new PageImpl<LessonDto>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
 				pageable, lessons.getTotalElements());
     }
