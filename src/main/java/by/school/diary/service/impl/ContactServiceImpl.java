@@ -10,7 +10,6 @@ import by.school.diary.exception.ContactNotFoundException;
 import by.school.diary.repository.ContactRepository;
 import by.school.diary.service.ContactService;
 import by.school.diary.utils.CustomModelMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-@Slf4j
+
 @Service
 public class ContactServiceImpl implements ContactService {
     @Autowired

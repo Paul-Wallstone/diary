@@ -76,11 +76,11 @@ public class DataLoader implements ApplicationRunner {
                 .password(encoder.encode("1234567"))
                 .roles(new HashSet<>(List.of(Role.ROLE_USER, Role.ROLE_ADMIN)))
                 .build());
-        log.info("Created: " + user.toString());
+        userRepository.save(user);
+
         GroupEntity group = GroupEntity.builder()
                 .title("A1")
                 .build();
-        log.info("Created: " + group.toString());
 
         StudentEntity student = StudentEntity.SBuilder()
                 .username("fsocket")
@@ -89,7 +89,6 @@ public class DataLoader implements ApplicationRunner {
                 .group(group)
                 .build();
         studentRepository.save(student);
-        log.info("Created: " + student.toString());
 
         StudentEntity student2 = StudentEntity.SBuilder()
                 .username("msocket")
@@ -98,7 +97,6 @@ public class DataLoader implements ApplicationRunner {
                 .group(group)
                 .build();
         studentRepository.save(student2);
-        log.info("Created: " + student2.toString());
 
         EmployeeEntity employee = EmployeeEntity.EBuilder()
                 .username("ssocket")
@@ -106,14 +104,12 @@ public class DataLoader implements ApplicationRunner {
                 .roles(new HashSet<>(List.of(Role.ROLE_USER)))
                 .build();
         employeeRepository.save(employee);
-        log.info("Created: " + employee.toString());
 
         SubjectEntity subject = SubjectEntity.builder()
                 .title("Math")
                 .employee(employee)
                 .build();
         subjectRepository.save(subject);
-        log.info("Created: " + subject.toString());
 
         LessonEntity lesson = LessonEntity.builder()
                 .date(LocalDate.of(2022, 6, 6))
@@ -160,16 +156,12 @@ public class DataLoader implements ApplicationRunner {
         studentLessonRepository.save(studentLesson4);
 
 
-        log.info("Created: " + studentLesson.toString());
-        log.info("Created: " + studentLesson2.toString());
-
         ContactEntity contact = ContactEntity.builder()
                 .address("some address")
                 .city("Minsk")
                 .phone("+37529-311-31-35")
                 .postcode("2021")
                 .build();
-        log.info("Created: " + contact.toString());
 
         ContactEntity contact2 = contactRepository.save(ContactEntity.builder()
                 .address("some address2")
@@ -177,7 +169,6 @@ public class DataLoader implements ApplicationRunner {
                 .phone("+37529-322-32-36")
                 .postcode("2022")
                 .build());
-        log.info("Created: " + contact2.toString());
 
         ContactEntity contact3 = contactRepository.save(ContactEntity.builder()
                 .address("some address3")
@@ -185,7 +176,6 @@ public class DataLoader implements ApplicationRunner {
                 .phone("+37529-322-32-34")
                 .postcode("2023")
                 .build());
-        log.info("Created: " + contact3.toString());
 
         InfoEntity info = InfoEntity.builder()
                 .firstName("Bname1")
@@ -195,7 +185,6 @@ public class DataLoader implements ApplicationRunner {
                 .sex(Sex.MALE)
                 .bio("some bio")
                 .build();
-        log.info("Created: " + info.toString());
 
         InfoEntity info2 = InfoEntity.builder()
                 .firstName("Dname2")
@@ -205,7 +194,6 @@ public class DataLoader implements ApplicationRunner {
                 .sex(Sex.MALE)
                 .bio("some bio2")
                 .build();
-        log.info("Created: " + info2.toString());
 
         InfoEntity info3 = InfoEntity.builder()
                 .firstName("Fname3")
@@ -215,17 +203,14 @@ public class DataLoader implements ApplicationRunner {
                 .sex(Sex.FEMALE)
                 .bio("some bio3")
                 .build();
-        log.info("Created: " + info3.toString());
 
         ParentEntity parent = ParentEntity.PBuilder()
                 .username("psocket")
                 .password(encoder.encode("1234567"))
                 .roles(new HashSet<>(List.of(Role.ROLE_USER)))
                 .build();
-        log.info("Created: " + parent.toString());
 
         student.setParent(parent);
-        log.info("Created: " + student.toString());
 
         student.setInfo(info);
         student2.setInfo(info2);

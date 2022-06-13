@@ -22,9 +22,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-@Slf4j
+
 @Service
 public class LessonServiceImpl implements LessonService {
+
     @Autowired
     private LessonRepository lessonRepository;
     @Autowired
