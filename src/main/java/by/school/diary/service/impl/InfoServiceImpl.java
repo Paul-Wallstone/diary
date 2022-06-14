@@ -16,9 +16,7 @@ import by.school.diary.exception.InfoNotFoundException;
 import by.school.diary.repository.InfoRepository;
 import by.school.diary.service.InfoService;
 import by.school.diary.utils.CustomModelMapper;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class InfoServiceImpl implements InfoService {
 	@Autowired
@@ -70,19 +68,19 @@ public class InfoServiceImpl implements InfoService {
 
 	@Override
 	public void deleteById(Long id) {
-        if (infoRepository.existsById(id)) {
+        try {
             infoRepository.deleteById(id);
-        } else {
-            throw new InfoNotFoundException(id);
-        }
+		} catch (IllegalArgumentException e) {
+			throw new InfoNotFoundException(id);
+		}
 	}
 
 	@Override
 	public void delete(InfoDto dto) {
         InfoEntity infoEntity = modelMapper.toEntity(dto);
-        if (infoRepository.findById(infoEntity.getId()).isPresent()) {
+        try {
             infoRepository.delete(infoEntity);
-        } else {
+        } catch (IllegalArgumentException e) {
             throw new InfoNotFoundException(infoEntity.getId());
         }
 	}

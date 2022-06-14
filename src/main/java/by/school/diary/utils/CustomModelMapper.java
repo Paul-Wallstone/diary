@@ -2,14 +2,18 @@ package by.school.diary.utils;
 
 import by.school.diary.dto.InfoDto;
 import by.school.diary.dto.LessonDto;
+import by.school.diary.dto.StudentDto;
 import by.school.diary.dto.StudentLessonDto;
 import by.school.diary.dto.ContactDto;
+import by.school.diary.dto.EmployeeDto;
 import by.school.diary.dto.request.SignUpRequestDto;
 import by.school.diary.dto.UserDto;
 import by.school.diary.entity.InfoEntity;
 import by.school.diary.entity.LessonEntity;
+import by.school.diary.entity.StudentEntity;
 import by.school.diary.entity.StudentLessonEntity;
 import by.school.diary.entity.ContactEntity;
+import by.school.diary.entity.EmployeeEntity;
 import by.school.diary.entity.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +75,21 @@ public class CustomModelMapper {
 
     public StudentLessonDto toDto(StudentLessonEntity entity) {
         return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, StudentLessonDto.class) : null;
+    }
+    
+    public StudentEntity toEntity(StudentDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, StudentEntity.class) : null;
+    }
+
+    public StudentDto toDto(StudentEntity entity) {
+        return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, StudentDto.class) : null;
+    }
+    
+    public EmployeeEntity toEntity(EmployeeDto dto) {
+        return Optional.ofNullable(dto).isPresent() ? mapper.map(dto, EmployeeEntity.class) : null;
+    }
+
+    public EmployeeDto toDto(EmployeeEntity entity) {
+        return Optional.ofNullable(entity).isPresent() ? mapper.map(entity, EmployeeDto.class) : null;
     }
 }

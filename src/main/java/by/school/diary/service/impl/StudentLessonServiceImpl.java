@@ -1,6 +1,7 @@
 package by.school.diary.service.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -12,6 +13,7 @@ import org.springframework.util.ObjectUtils;
 import by.school.diary.dto.EmployeeDto;
 import by.school.diary.dto.StudentDto;
 import by.school.diary.dto.StudentLessonDto;
+import by.school.diary.entity.StudentEntity;
 import by.school.diary.entity.StudentLessonEntity;
 import by.school.diary.exception.IdIsNullException;
 import by.school.diary.exception.StudentLessonNotFoundException;
@@ -28,9 +30,7 @@ public class StudentLessonServiceImpl implements StudentLessonService {
 
 	@Override
 	public StudentLessonDto getById(Long id) {
-		StudentLessonEntity StudentLessonEntity = studentLessonRepository.findById(id)
-				.orElseThrow(() -> new StudentLessonNotFoundException(id));
-		return modelMapper.toDto(StudentLessonEntity);
+		return modelMapper.toDto(getEntityById(id));
 	}
 
 	@Override
@@ -49,18 +49,14 @@ public class StudentLessonServiceImpl implements StudentLessonService {
 
 	@Override
 	public StudentLessonDto update(StudentLessonDto dto, Long id) {
-		StudentLessonEntity StudentLessonEntity = studentLessonRepository.findById(id)
-				.orElseThrow(() -> new StudentLessonNotFoundException(id));
-		StudentLessonEntity updatedLesson = studentLessonRepository.save(StudentLessonEntity);
+		StudentLessonEntity updatedLesson = studentLessonRepository.save(getEntityById(id));
 		return modelMapper.toDto(updatedLesson);
 	}
 
 	@Override
 	public StudentLessonDto update(StudentLessonDto dto) {
 		if (!ObjectUtils.isEmpty(dto.getId())) {
-			StudentLessonEntity StudentLessonEntity = studentLessonRepository.findById(dto.getId())
-					.orElseThrow(() -> new StudentLessonNotFoundException(dto.getId()));
-			StudentLessonEntity updatedLesson = studentLessonRepository.save(StudentLessonEntity);
+			StudentLessonEntity updatedLesson = studentLessonRepository.save(getEntityById(dto.getId()));
 			return modelMapper.toDto(updatedLesson);
 		} else {
 			throw new IdIsNullException("Id is null! Please revise your request!");
@@ -69,31 +65,36 @@ public class StudentLessonServiceImpl implements StudentLessonService {
 
 	@Override
 	public void deleteById(Long id) {
-		if (studentLessonRepository.existsById(id)) {
+		try {
 			studentLessonRepository.deleteById(id);
-		} else {
+		} catch (IllegalArgumentException e) {
 			throw new StudentLessonNotFoundException(id);
 		}
 	}
 
 	@Override
 	public List<StudentDto> studentsBy(StudentLessonDto studentLessonDto) {
-		return null;
+		Set<StudentEntity> students = getEntityById(studentLessonDto.getId()).getLesson().getGroup().getStudents();
+		return students.stream().map(student -> modelMapper.toDto(student)).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<StudentDto> studentsById(Long id) {
-		return null;
+		Set<StudentEntity> students = getEntityById(id).getLesson().getGroup().getStudents();
+		return students.stream().map(student -> modelMapper.toDto(student)).collect(Collectors.toList());
 	}
 
 	@Override
 	public EmployeeDto employeeBy(StudentLessonDto studentLessonDto) {
-		return null;
+		return modelMapper.toDto(getEntityById(studentLessonDto.getId()).getLesson().getEmployee());
 	}
 
 	@Override
 	public EmployeeDto employeeById(Long id) {
-		return null;
+		return modelMapper.toDto(getEntityById(id).getLesson().getEmployee());
 	}
 
+	public StudentLessonEntity getEntityById(Long id) {
+		return studentLessonRepository.findById(id).orElseThrow(() -> new StudentLessonNotFoundException(id));
+	}
 }

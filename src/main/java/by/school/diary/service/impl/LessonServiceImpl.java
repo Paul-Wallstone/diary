@@ -67,17 +67,17 @@ public class LessonServiceImpl implements LessonService {
         }
     }
 
-    @Override
-    public void deleteById(Long id) {
-        if (lessonRepository.existsById(id)) {
-            lessonRepository.deleteById(id);
-        } else {
-            throw new LessonNotFoundException(id);
-        }
-    }
+	@Override
+	public void deleteById(Long id) {
+		try {
+			lessonRepository.deleteById(id);
+		} catch (IllegalArgumentException e) {
+			throw new LessonNotFoundException(id);
+		}
+	}
 
 	@Override
-	public Page<LessonDto> findAllByDateBetween(Date from, Date to, Pageable pageable) {
+	public Page<LessonDto> allByDates(Date from, Date to, Pageable pageable) {
 		Page<LessonEntity> lessons = lessonRepository.findAllByDateBetween(from, to, pageable);
 		return new PageImpl<LessonDto>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
@@ -85,7 +85,7 @@ public class LessonServiceImpl implements LessonService {
 	}
 
     @Override
-    public Page<LessonDto> findAllByDateBetweenAndEmployeeId(Date from, Date to, Long employeeId, Pageable pageable) {
+    public Page<LessonDto> allByDatesAndEmployeeId(Date from, Date to, Long employeeId, Pageable pageable) {
     	Page<LessonEntity> lessons = lessonRepository.findAllByDateBetweenAndEmployeeId(from, to, employeeId, pageable);
 		return new PageImpl<LessonDto>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
@@ -93,7 +93,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Page<LessonDto> findAllByDateBetweenAndSubjectId(Date from, Date to, Long subjectId, Pageable pageable) {
+    public Page<LessonDto> allByDatesAndSubjectId(Date from, Date to, Long subjectId, Pageable pageable) {
     	Page<LessonEntity> lessons = lessonRepository.findAllByDateBetweenAndSubjectId(from, to, subjectId, pageable);
 		return new PageImpl<LessonDto>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
@@ -101,7 +101,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Page<LessonDto> findAllByDateBetweenAndGroupId(Date from, Date to, Long groupId, Pageable pageable) {
+    public Page<LessonDto> allByDatesAndGroupId(Date from, Date to, Long groupId, Pageable pageable) {
     	Page<LessonEntity> lessons = lessonRepository.findAllByDateBetweenAndGroupId(from, to, groupId, pageable);
 		return new PageImpl<LessonDto>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),

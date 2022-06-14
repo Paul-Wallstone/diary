@@ -2,7 +2,6 @@ package by.school.diary.utils;
 
 import by.school.diary.controller.LessonController;
 import by.school.diary.dto.LessonDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -18,12 +17,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class LessonModelAssembler implements RepresentationModelAssembler<LessonDto, EntityModel<LessonDto>> {
-    private final CustomModelMapper modelMapper;
-
-    @Autowired
-    public LessonModelAssembler(CustomModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
 
     @NonNull
     @Override
@@ -32,8 +25,8 @@ public class LessonModelAssembler implements RepresentationModelAssembler<Lesson
                 linkTo(methodOn(LessonController.class).getById(entity.getId())).withRel("lesson"),
                 linkTo(methodOn(LessonController.class).getAll()).withRel("lessons"),
                 linkTo(methodOn(LessonController.class).deleteById(entity.getId())).withRel("delete"),
-                linkTo(methodOn(LessonController.class).save(modelMapper.toDto(entity))).withRel("save"),
-                linkTo(methodOn(LessonController.class).update(entity.getId(), modelMapper.toDto(entity))).withRel("update"));
+                linkTo(methodOn(LessonController.class).save(entity)).withRel("save"),
+                linkTo(methodOn(LessonController.class).update(entity.getId(), entity)).withRel("update"));
     }
 
     @NonNull
