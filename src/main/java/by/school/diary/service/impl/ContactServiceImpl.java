@@ -1,6 +1,7 @@
 package by.school.diary.service.impl;
 
 import by.school.diary.exception.IdIsNullException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,19 +68,19 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void deleteById(Long id) {
-        if (contactRepository.existsById(id)) {
+        try {
             contactRepository.deleteById(id);
-        } else {
-            throw new ContactNotFoundException(id);
-        }
+		} catch (IllegalArgumentException e) {
+			throw new ContactNotFoundException(id);
+		}
     }
 
     @Override
     public void delete(ContactDto dto) {
         ContactEntity contactEntity = modelMapper.toEntity(dto);
-        if (contactRepository.findById(contactEntity.getId()).isPresent()) {
+        try {
             contactRepository.delete(contactEntity);
-        } else {
+        } catch (IllegalArgumentException e) {
             throw new ContactNotFoundException(contactEntity.getId());
         }
     }

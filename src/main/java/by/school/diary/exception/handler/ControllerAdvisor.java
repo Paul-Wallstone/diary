@@ -146,13 +146,25 @@ public class ControllerAdvisor {
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(InfoNotFoundException.class)
-    public ErrorResponseDto handInfoNotFoundException(InfoNotFoundException infoNotFoundException) {
+    public ErrorResponseDto handleInfoNotFoundException(InfoNotFoundException infoNotFoundException) {
         return ErrorResponseDto.builder()
                 .title(OBJECT_NOT_FOUND)
                 .message(infoNotFoundException.getMessage())
                 .status(NOT_FOUND)
                 .timestamp(now().toString())
                 .stacktrace(ExceptionUtils.getStackTrace(infoNotFoundException))
+                .build();
+    }
+    
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(StudentLessonNotFoundException.class)
+    public ErrorResponseDto handleStudentLessonNotFoundException(StudentLessonNotFoundException studentLessonNotFoundException) {
+        return ErrorResponseDto.builder()
+                .title(OBJECT_NOT_FOUND)
+                .message(studentLessonNotFoundException.getMessage())
+                .status(NOT_FOUND)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(studentLessonNotFoundException))
                 .build();
     }
 }

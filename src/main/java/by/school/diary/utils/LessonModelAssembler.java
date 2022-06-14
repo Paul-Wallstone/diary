@@ -1,8 +1,7 @@
 package by.school.diary.utils;
 
 import by.school.diary.controller.LessonController;
-import by.school.diary.dto.response.LessonResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import by.school.diary.dto.LessonDto;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -17,31 +16,25 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class LessonModelAssembler implements RepresentationModelAssembler<LessonResponseDto, EntityModel<LessonResponseDto>> {
-    private final CustomModelMapper modelMapper;
-
-    @Autowired
-    public LessonModelAssembler(CustomModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
+public class LessonModelAssembler implements RepresentationModelAssembler<LessonDto, EntityModel<LessonDto>> {
 
     @NonNull
     @Override
-    public EntityModel<LessonResponseDto> toModel(LessonResponseDto entity) {
+    public EntityModel<LessonDto> toModel(LessonDto entity) {
         return EntityModel.of(entity,
                 linkTo(methodOn(LessonController.class).getById(entity.getId())).withRel("lesson"),
                 linkTo(methodOn(LessonController.class).getAll()).withRel("lessons"),
                 linkTo(methodOn(LessonController.class).deleteById(entity.getId())).withRel("delete"),
-                linkTo(methodOn(LessonController.class).save(modelMapper.toDto(entity))).withRel("save"),
-                linkTo(methodOn(LessonController.class).update(entity.getId(), modelMapper.toDto(entity))).withRel("update"));
+                linkTo(methodOn(LessonController.class).save(entity)).withRel("save"),
+                linkTo(methodOn(LessonController.class).update(entity.getId(), entity)).withRel("update"));
     }
 
     @NonNull
     @Override
-    public CollectionModel<EntityModel<LessonResponseDto>> toCollectionModel(Iterable<? extends LessonResponseDto> entities) {
-        List<LessonResponseDto> responseDtos = StreamSupport.stream(entities.spliterator(), false)
+    public CollectionModel<EntityModel<LessonDto>> toCollectionModel(Iterable<? extends LessonDto> entities) {
+        List<LessonDto> responseDtos = StreamSupport.stream(entities.spliterator(), false)
                 .collect(Collectors.toList());
-        List<EntityModel<LessonResponseDto>> lessoModels = responseDtos.stream()
+        List<EntityModel<LessonDto>> lessoModels = responseDtos.stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(lessoModels, linkTo(methodOn(LessonController.class).getAll()).withSelfRel());
