@@ -42,8 +42,8 @@ public class StudentLessonServiceImpl implements StudentLessonService {
 
 	@Override
 	public StudentLessonDto save(StudentLessonDto dto) {
-		StudentLessonEntity StudentLessonEntity = modelMapper.toEntity(dto);
-		StudentLessonEntity savedLesson = studentLessonRepository.save(StudentLessonEntity);
+		StudentLessonEntity studentLessonEntity = modelMapper.toEntity(dto);
+		StudentLessonEntity savedLesson = studentLessonRepository.save(studentLessonEntity);
 		return modelMapper.toDto(savedLesson);
 	}
 

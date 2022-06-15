@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -77,33 +77,33 @@ public class LessonServiceImpl implements LessonService {
 	}
 
 	@Override
-	public Page<LessonDto> allByDates(Date from, Date to, Pageable pageable) {
+	public Page<LessonDto> allByDates(LocalDate from, LocalDate to, Pageable pageable) {
 		Page<LessonEntity> lessons = lessonRepository.findAllByDateBetween(from, to, pageable);
-		return new PageImpl<LessonDto>(
+		return new PageImpl<>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
 				pageable, lessons.getTotalElements());
 	}
 
     @Override
-    public Page<LessonDto> allByDatesAndEmployeeId(Date from, Date to, Long employeeId, Pageable pageable) {
+    public Page<LessonDto> allByDatesAndEmployeeId(LocalDate from, LocalDate to, Long employeeId, Pageable pageable) {
     	Page<LessonEntity> lessons = lessonRepository.findAllByDateBetweenAndEmployeeId(from, to, employeeId, pageable);
-		return new PageImpl<LessonDto>(
+		return new PageImpl<>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
 				pageable, lessons.getTotalElements());
     }
 
     @Override
-    public Page<LessonDto> allByDatesAndSubjectId(Date from, Date to, Long subjectId, Pageable pageable) {
+    public Page<LessonDto> allByDatesAndSubjectId(LocalDate from, LocalDate to, Long subjectId, Pageable pageable) {
     	Page<LessonEntity> lessons = lessonRepository.findAllByDateBetweenAndSubjectId(from, to, subjectId, pageable);
-		return new PageImpl<LessonDto>(
+		return new PageImpl<>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
 				pageable, lessons.getTotalElements());
     }
 
     @Override
-    public Page<LessonDto> allByDatesAndGroupId(Date from, Date to, Long groupId, Pageable pageable) {
+    public Page<LessonDto> allByDatesAndGroupId(LocalDate from, LocalDate to, Long groupId, Pageable pageable) {
     	Page<LessonEntity> lessons = lessonRepository.findAllByDateBetweenAndGroupId(from, to, groupId, pageable);
-		return new PageImpl<LessonDto>(
+		return new PageImpl<>(
 				lessons.getContent().stream().map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList()),
 				pageable, lessons.getTotalElements());
     }
