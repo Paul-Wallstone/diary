@@ -49,7 +49,7 @@ public class LessonEntity extends BaseEntity implements Serializable {
     @ToString.Exclude
     private GroupEntity group;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     @NotNull
     @ToString.Exclude

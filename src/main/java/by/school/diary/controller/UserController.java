@@ -3,7 +3,7 @@ package by.school.diary.controller;
 import by.school.diary.domain.Role;
 import by.school.diary.dto.UserDto;
 import by.school.diary.service.UserService;
-import by.school.diary.utils.UserModelAssembler;
+import by.school.diary.utils.assembler.UserModelAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;

@@ -23,7 +23,7 @@ public class SubjectEntity extends BaseEntity implements Serializable {
     @Column(length = 125)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     @ToString.Exclude
     private EmployeeEntity employee;

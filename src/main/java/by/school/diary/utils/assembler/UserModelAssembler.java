@@ -1,16 +1,15 @@
-package by.school.diary.utils;
+package by.school.diary.utils.assembler;
 
 
 import by.school.diary.controller.UserController;
 import by.school.diary.dto.UserDto;
+import by.school.diary.utils.mapper.CustomModelMapper;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.lang.NonNull;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;

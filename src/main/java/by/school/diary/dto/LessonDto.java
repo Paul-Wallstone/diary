@@ -17,12 +17,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Proxy;
+import org.springframework.hateoas.RepresentationModel;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LessonDto {
+public class LessonDto  {
 
     private Long id;
 
@@ -33,7 +35,7 @@ public class LessonDto {
 
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     @JsonSerialize(using = LocalTimeSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,  pattern = "HH:mm")
     private LocalTime timeFrom;
 
     @JsonDeserialize(using = LocalTimeDeserializer.class)
@@ -43,9 +45,9 @@ public class LessonDto {
 
     private String description;
 
-    private SubjectEntity subject;
+    private SubjectDto subject;
 
-    private GroupEntity group;
+    private GroupDto group;
 
-    private EmployeeEntity employee;
+    private EmployeeDto employee;
 }

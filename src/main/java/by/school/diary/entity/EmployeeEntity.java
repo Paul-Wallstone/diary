@@ -2,6 +2,7 @@ package by.school.diary.entity;
 
 import by.school.diary.domain.Role;
 import lombok.*;
+import org.hibernate.annotations.Proxy;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -46,7 +47,7 @@ public class EmployeeEntity extends UserEntity implements Serializable {
     @ToString.Exclude
     private Set<LessonEntity> lessons = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "institution_id")
     @ToString.Exclude
     private InstitutionEntity institution;

@@ -6,7 +6,7 @@ import by.school.diary.exception.IdIsNullException;
 import by.school.diary.exception.LessonNotFoundException;
 import by.school.diary.repository.LessonRepository;
 import by.school.diary.service.LessonService;
-import by.school.diary.utils.CustomModelMapper;
+import by.school.diary.utils.mapper.CustomModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

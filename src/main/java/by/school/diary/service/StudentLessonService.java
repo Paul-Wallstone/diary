@@ -3,15 +3,16 @@ package by.school.diary.service;
 import by.school.diary.dto.EmployeeDto;
 import by.school.diary.dto.StudentDto;
 import by.school.diary.dto.StudentLessonDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 //TODO реализовать интерфейс и DTO +добавить свои методы
 public interface StudentLessonService extends CRUDService<StudentLessonDto, StudentLessonDto> {
 
-    List<StudentDto> studentsBy(StudentLessonDto studentLessonDto);
+    Page<StudentDto> studentsBy(StudentLessonDto studentLessonDto, Pageable pageable);
 
-    List<StudentDto> studentsById(Long id);
+    Page<StudentDto> studentsById(Long id, Pageable pageable);
 
     EmployeeDto employeeBy(StudentLessonDto studentLessonDto);
 
