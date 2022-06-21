@@ -1,4 +1,4 @@
-package by.school.diary.utils;
+package by.school.diary.utils.assembler;
 
 import by.school.diary.controller.LessonController;
 import by.school.diary.dto.LessonDto;
@@ -16,7 +16,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class LessonModelAssembler implements RepresentationModelAssembler<LessonDto, EntityModel<LessonDto>> {
+public class LessonModelAssembler implements RepresentationModelAssembler<LessonDto, EntityModel<LessonDto>>  {
 
     @NonNull
     @Override
@@ -28,6 +28,7 @@ public class LessonModelAssembler implements RepresentationModelAssembler<Lesson
                 linkTo(methodOn(LessonController.class).save(entity)).withRel("save"),
                 linkTo(methodOn(LessonController.class).update(entity.getId(), entity)).withRel("update"));
     }
+
 
     @NonNull
     @Override

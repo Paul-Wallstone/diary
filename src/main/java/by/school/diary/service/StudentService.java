@@ -2,6 +2,8 @@ package by.school.diary.service;
 
 
 import by.school.diary.dto.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,22 +15,22 @@ public interface StudentService extends CRUDService<StudentDto, StudentDto> {
 
     void deleteAllBy(StudentDto studentDto);
 
-    List<ParentDto> parentsBy(StudentDto studentDto);
+    Page<ParentDto> parentsBy(StudentDto studentDto, Pageable pageable);
 
-    List<ParentDto> parentsById(Long studentId);
+    Page<ParentDto> parentsById(Long studentId, Pageable pageable);
 
-    List<LessonDto> lessonsById(Long studentId);
+    Page<LessonDto> lessonsById(Long studentId, Pageable pageable);
 
-    List<LessonDto> lessonsBy(StudentDto studentDto);
+    Page<LessonDto> lessonsBy(StudentDto studentDto, Pageable pageable);
 
-    List<LessonDto> lessonsBy(StudentDto studentDto, LocalDate from, LocalDate to);
+    Page<LessonDto> lessonsBy(StudentDto studentDto, LocalDate from, LocalDate to, Pageable pageable);
 
-    List<LessonDto> lessonsBy(StudentDto studentDto, GroupDto groupDto, LocalDate from, LocalDate to);
+    Page<LessonDto> lessonsBy(StudentDto studentDto, GroupDto groupDto, LocalDate from, LocalDate to, Pageable pageable);
 
-    List<StudentLessonDto> studentLessonsBy(StudentDto studentDto);
+    Page<StudentLessonDto> studentLessonsBy(StudentDto studentDto, Pageable pageable);
 
-    List<StudentLessonDto> studentLessonsBy(StudentDto studentDto, LocalDate from, LocalDate to);
+    Page<StudentLessonDto> studentLessonsBy(StudentDto studentDto, LocalDate from, LocalDate to, Pageable pageable);
 
-    List<StudentLessonDto> studentLessonsBy(StudentDto studentDto, GroupDto groupDto, LocalDate from, LocalDate to);
+    Page<StudentLessonDto> studentLessonsBy(StudentDto studentDto, GroupDto groupDto, LocalDate from, LocalDate to, Pageable pageable);
 
 }

@@ -57,7 +57,7 @@ public class UserEntity extends BaseEntity implements UserDetails, Serializable 
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "role_id")
     private Set<Role> roles = new HashSet<>();
 

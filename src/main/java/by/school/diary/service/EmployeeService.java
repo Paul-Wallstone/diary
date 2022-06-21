@@ -1,6 +1,8 @@
 package by.school.diary.service;
 
 import by.school.diary.dto.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,21 +16,21 @@ public interface EmployeeService extends CRUDService<EmployeeDto, EmployeeDto> {
 
     GroupDto findById(Long employeeId);
 
-    List<SubjectDto> subjectsBy(EmployeeDto employeeDto);
+    Page<SubjectDto> subjectsBy(EmployeeDto employeeDto, Pageable pageable);
 
-    List<SubjectDto> subjectsById(Long employeeId);
+    Page<SubjectDto> subjectsById(Long employeeId, Pageable pageable);
 
-    List<LessonDto> lessonsBy(EmployeeDto employeeDto);
+    Page<LessonDto> lessonsBy(EmployeeDto employeeDto, Pageable pageable);
 
-    List<LessonDto> lessonsById(Long employeeId);
+    Page<LessonDto> lessonsById(Long employeeId, Pageable pageable);
 
-    List<LessonDto> lessonsBy(EmployeeDto employeeDto, LocalDate from, LocalDate to);
+    Page<LessonDto> lessonsBy(EmployeeDto employeeDto, LocalDate from, LocalDate to, Pageable pageable);
 
-    List<LessonDto> lessonsBy(EmployeeDto employeeDto, GroupDto groupDto, LocalDate from, LocalDate to);
+    Page<LessonDto> lessonsBy(EmployeeDto employeeDto, GroupDto groupDto, LocalDate from, LocalDate to, Pageable pageable);
 
-    List<StudentLessonDto> studentLessonsBy(EmployeeDto employeeDto);
+    Page<StudentLessonDto> studentLessonsBy(EmployeeDto employeeDto, Pageable pageable);
 
-    List<StudentLessonDto> studentLessonsBy(EmployeeDto employeeDto, LocalDate from, LocalDate to);
+    Page<StudentLessonDto> studentLessonsBy(EmployeeDto employeeDto, LocalDate from, LocalDate to, Pageable pageable);
 
-    List<StudentLessonDto> studentLessonsBy(EmployeeDto employeeDto, GroupDto groupDto, LocalDate from, LocalDate to);
+    Page<StudentLessonDto> studentLessonsBy(EmployeeDto employeeDto, GroupDto groupDto, LocalDate from, LocalDate to, Pageable pageable);
 }

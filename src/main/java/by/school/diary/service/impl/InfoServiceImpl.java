@@ -15,7 +15,7 @@ import by.school.diary.exception.IdIsNullException;
 import by.school.diary.exception.InfoNotFoundException;
 import by.school.diary.repository.InfoRepository;
 import by.school.diary.service.InfoService;
-import by.school.diary.utils.CustomModelMapper;
+import by.school.diary.utils.mapper.CustomModelMapper;
 
 @Service
 public class InfoServiceImpl implements InfoService {

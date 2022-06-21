@@ -3,7 +3,7 @@ package by.school.diary.controller;
 
 import by.school.diary.dto.UserDto;
 import by.school.diary.service.UserService;
-import by.school.diary.utils.UserModelAssembler;
+import by.school.diary.utils.assembler.UserModelAssembler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

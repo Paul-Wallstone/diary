@@ -10,7 +10,7 @@ import by.school.diary.entity.ContactEntity;
 import by.school.diary.exception.ContactNotFoundException;
 import by.school.diary.repository.ContactRepository;
 import by.school.diary.service.ContactService;
-import by.school.diary.utils.CustomModelMapper;
+import by.school.diary.utils.mapper.CustomModelMapper;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
