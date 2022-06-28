@@ -40,7 +40,7 @@ public class StudentLessonServiceImpl implements StudentLessonService {
     }
 
     @Override
-    public List<StudentLessonDto> getAll() {
+    public List<StudentLessonDto> all() {
         Stream<StudentLessonEntity> lessonEntities = StreamSupport
                 .stream(studentLessonRepository.findAll().spliterator(), false);
         return lessonEntities.map(lesson -> modelMapper.toDto(lesson)).collect(Collectors.toList());

@@ -51,7 +51,7 @@ public class UserController {
             "'" + Role.Fields.ROLE_TEACHER + "','" + Role.Fields.ROLE_DIRECTOR + "')")
     @Operation(summary = "Provides all users available in the Diary application")
     public CollectionModel<EntityModel<UserDto>> getAll() {
-        List<UserDto> allUsers = userService.getAll();
+        List<UserDto> allUsers = userService.all();
         return assembler.toCollectionModel(allUsers);
     }
 

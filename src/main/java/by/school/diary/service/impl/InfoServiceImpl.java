@@ -31,7 +31,7 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 	@Override
-	public List<InfoDto> getAll() {
+	public List<InfoDto> all() {
 		Stream<InfoEntity> infoEntities = StreamSupport.stream(infoRepository.findAll().spliterator(), false);
 		return infoEntities.map(info -> modelMapper.toDto(info)).collect(Collectors.toList());
 	}

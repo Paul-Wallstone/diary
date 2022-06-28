@@ -59,8 +59,8 @@ public class LessonController {
     @GetMapping("/")
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Provides all lessons available in the Diary application")
-    public CollectionModel<EntityModel<LessonDto>> getAll() {
-        List<LessonDto> lessonDtos = lessonService.getAll();
+    public CollectionModel<EntityModel<LessonDto>> all() {
+        List<LessonDto> lessonDtos = lessonService.all();
         return assembler.toCollectionModel(lessonDtos);
     }
 
