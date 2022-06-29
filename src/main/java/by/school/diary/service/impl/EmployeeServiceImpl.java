@@ -21,6 +21,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -42,6 +43,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void delete(EmployeeDto employeeDto) {
         EmployeeEntity employeeEntity = modelMapper.toEntity(employeeDto);
+        if (Optional.ofNullable(employeeEntity).isEmpty())
+            throw new IdIsNullException("Employee is null, please revise request!");
         try {
             employeeRepository.delete(employeeEntity);
         } catch (Exception e) {
