@@ -165,14 +165,14 @@ class EmployeeServiceImplTest {
     @Test
     void testDeleteNullFailed() {
         when(modelMapper.toEntity(any(EmployeeDto.class))).thenReturn(EMPLOYEE_ENTITY);
-        doThrow(EmployeeNotFoundException.class).when(employeeRepository).delete(null);
+        doThrow(EmployeeNotFoundException.class).when(employeeRepository).delete(EMPLOYEE_ENTITY);
         assertThrows(IdIsNullException.class, () -> employeeService.delete(null));
         verify(employeeRepository, never()).delete(any());
     }
 
     @Test
     void testDeleteNullWithMapperFailed() {
-        doThrow(EmployeeNotFoundException.class).when(employeeRepository).delete(null);
+        doThrow(EmployeeNotFoundException.class).when(employeeRepository).delete(EMPLOYEE_ENTITY);
         assertThrows(IdIsNullException.class, () -> employeeService.delete(null));
         verify(employeeRepository, never()).delete(any());
     }
