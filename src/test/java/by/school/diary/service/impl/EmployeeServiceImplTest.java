@@ -6,6 +6,7 @@ import by.school.diary.entity.*;
 import by.school.diary.exception.EmployeeNotFoundException;
 import by.school.diary.exception.GroupNotFoundException;
 import by.school.diary.exception.IdIsNullException;
+import by.school.diary.exception.SubjectNotFoundException;
 import by.school.diary.repository.EmployeeRepository;
 import by.school.diary.repository.GroupRepository;
 import by.school.diary.repository.LessonRepository;
@@ -24,9 +25,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -45,17 +46,23 @@ class EmployeeServiceImplTest {
     @InjectMocks
     private EmployeeServiceImpl employeeService;
 
-    private final List<EmployeeDto> dtos = new ArrayList<>();
-    private final List<EmployeeEntity> entities = new ArrayList<>();
+    private final List<EmployeeDto> employeeDtos = new ArrayList<>();
+    private final List<EmployeeEntity> employeeEntities = new ArrayList<>();
+    private final List<SubjectEntity> subjectEntities = new ArrayList<>();
+    private final List<SubjectDto> subjectDtos = new ArrayList<>();
     public static final GroupEntity GROUP_ENTITY = GroupEntity.builder().title("A1").build();
     public static final GroupDto GROUP_DTO = GroupDto.builder().title("A1").build();
+    public static final SubjectEntity SUBJECT_ENTITY = SubjectEntity.builder().title("Math").build();
+    public static final SubjectEntity SUBJECT_ENTITY2 = SubjectEntity.builder().title("English").build();
+    public static final SubjectDto SUBJECT_DTO = SubjectDto.builder().title("Math").build();
+    public static final SubjectDto SUBJECT_DTO2 = SubjectDto.builder().title("English").build();
     public static EmployeeEntity EMPLOYEE_ENTITY;
     public static EmployeeDto EMPLOYEE_DTO;
 
     @BeforeEach
     void setUp() {
-        dtos.clear();
-        entities.clear();
+        employeeDtos.clear();
+        employeeEntities.clear();
         ContactDto contact = ContactDto.builder()
                 .address("some address")
                 .city("Minsk")
@@ -90,7 +97,7 @@ class EmployeeServiceImplTest {
                 .institution(institution)
                 .build();
 
-        dtos.add(EMPLOYEE_DTO);
+        employeeDtos.add(EMPLOYEE_DTO);
 
         ContactEntity contactEntity = ContactEntity.builder()
                 .address("some address")
@@ -131,7 +138,11 @@ class EmployeeServiceImplTest {
                 .roles(new HashSet<>())
                 .build();
         EMPLOYEE_ENTITY.setId(1L);
-        entities.add(EMPLOYEE_ENTITY);
+        employeeEntities.add(EMPLOYEE_ENTITY);
+        subjectEntities.add(SUBJECT_ENTITY);
+        subjectEntities.add(SUBJECT_ENTITY2);
+        subjectDtos.add(SUBJECT_DTO);
+        subjectDtos.add(SUBJECT_DTO2);
     }
 
     @Test
@@ -230,16 +241,86 @@ class EmployeeServiceImplTest {
     }
 
     @Test
-    void findById() {
+    void testByEmployeeIdGetGroupDtoSuccess() {
+        when(modelMapper.toDto(any(GroupEntity.class))).thenReturn(GROUP_DTO);
+        when(groupRepository.findByEmployeeId(anyLong())).thenReturn(Optional.ofNullable(GROUP_ENTITY));
+        GroupDto actualGroupDto = employeeService.findById(1L);
+        assertEquals(GROUP_DTO, actualGroupDto);
+        verify(groupRepository).findByEmployeeId(1L);
+        verify(groupRepository, times(1)).findByEmployeeId(1L);
+        verify(groupRepository, never()).findByEmployeeId(isNull());
     }
 
     @Test
-    void subjectsBy() {
+    void testByEmployeeIdGetGroupDtoWithMapperSuccess() {
+        when(groupRepository.findByEmployeeId(anyLong())).thenReturn(Optional.ofNullable(GROUP_ENTITY));
+        GroupDto actualGroupDto = employeeService.findById(1L);
+        assertEquals(GROUP_DTO, actualGroupDto);
+        verify(groupRepository).findByEmployeeId(1L);
+        verify(groupRepository, times(1)).findByEmployeeId(1L);
+        verify(groupRepository, never()).findByEmployeeId(isNull());
     }
 
     @Test
-    void subjectsById() {
+    void testFindByEmployeeIdSetNullEmployeeDtoFailed() {
+        when(modelMapper.toDto(any(GroupEntity.class))).thenReturn(GROUP_DTO);
+        when(groupRepository.findByEmployeeId(null)).thenReturn(Optional.ofNullable(null));
+        assertThrows(GroupNotFoundException.class, () -> employeeService.findById(null));
+        verify(groupRepository).findByEmployeeId(null);
+        verify(groupRepository, times(1)).findByEmployeeId(isNull());
+        verify(groupRepository, never()).findByEmployeeId(anyLong());
     }
+
+    @Test
+    void testFindByEmployeeIdGetNullGroupEntityFailed() {
+        when(modelMapper.toDto(any(GroupEntity.class))).thenReturn(GROUP_DTO);
+        when(groupRepository.findByEmployeeId(anyLong())).thenReturn(Optional.ofNullable(null));
+        assertThrows(GroupNotFoundException.class, () -> employeeService.findById(1L));
+        verify(groupRepository).findByEmployeeId(anyLong());
+        verify(groupRepository, times(1)).findByEmployeeId(anyLong());
+    }
+
+    @Test
+    void testSubjectsByIdSuccess() {
+        when(modelMapper.toDto(any(SubjectEntity.class))).thenReturn(SUBJECT_DTO).thenReturn(SUBJECT_DTO2);
+        when(subjectRepository.findByEmployeeId(anyLong())).thenReturn(Optional.ofNullable(subjectEntities));
+        List<SubjectDto> subjectDtos = employeeService.subjectsById(anyLong());
+        assertEquals(subjectDtos.get(0), this.subjectDtos.get(0));
+        assertEquals(subjectDtos.get(1), this.subjectDtos.get(1));
+        assertArrayEquals(subjectDtos.toArray(), this.subjectDtos.toArray());
+        verify(subjectRepository).findByEmployeeId(anyLong());
+        verify(subjectRepository, times(1)).findByEmployeeId(anyLong());
+    }
+
+    @Test
+    void testSubjectsByIdWithMapperSuccess() {
+        when(subjectRepository.findByEmployeeId(anyLong())).thenReturn(Optional.ofNullable(subjectEntities));
+        List<SubjectDto> subjectDtos = employeeService.subjectsById(anyLong());
+        assertEquals(subjectDtos.get(0), this.subjectDtos.get(0));
+        assertEquals(subjectDtos.get(1), this.subjectDtos.get(1));
+        assertArrayEquals(subjectDtos.toArray(), this.subjectDtos.toArray());
+        verify(subjectRepository).findByEmployeeId(anyLong());
+        verify(subjectRepository, times(1)).findByEmployeeId(anyLong());
+    }
+
+    @Test
+    void testSubjectsByIdSetNullWithMapperFailed() {
+        when(subjectRepository.findByEmployeeId(null)).thenReturn(Optional.ofNullable(null));
+        assertThrows(SubjectNotFoundException.class, () -> employeeService.subjectsById(null));
+        verify(subjectRepository).findByEmployeeId(null);
+        verify(subjectRepository, times(1)).findByEmployeeId(null);
+        verify(subjectRepository, never()).findByEmployeeId(anyLong());
+    }
+
+    @Test
+    void testSubjectsByIdGetNullWithMapperFailed() {
+        when(subjectRepository.findByEmployeeId(1L)).thenReturn(Optional.ofNullable(null));
+        assertThrows(SubjectNotFoundException.class, () -> employeeService.subjectsById(1L));
+        verify(subjectRepository).findByEmployeeId(anyLong());
+        verify(subjectRepository, times(1)).findByEmployeeId(anyLong());
+        verify(subjectRepository, never()).findByEmployeeId(null);
+    }
+
 
     @Test
     void lessonsBy() {
