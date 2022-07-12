@@ -38,6 +38,42 @@ public class ControllerAdvisor {
     }
 
     @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(SubjectNotFoundException.class)
+    public ErrorResponseDto handleSubjectNotFoundException(SubjectNotFoundException subjectNotFoundException) {
+        return ErrorResponseDto.builder()
+                .title(OBJECT_NOT_FOUND)
+                .message(subjectNotFoundException.getMessage())
+                .status(NOT_FOUND)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(subjectNotFoundException))
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(GroupNotFoundException.class)
+    public ErrorResponseDto handleGroupNotFoundException(GroupNotFoundException groupNotFoundException) {
+        return ErrorResponseDto.builder()
+                .title(OBJECT_NOT_FOUND)
+                .message(groupNotFoundException.getMessage())
+                .status(NOT_FOUND)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(groupNotFoundException))
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ErrorResponseDto handleEmployeeNotFoundException(EmployeeNotFoundException employeeNotFoundException) {
+        return ErrorResponseDto.builder()
+                .title(OBJECT_NOT_FOUND)
+                .message(employeeNotFoundException.getMessage())
+                .status(NOT_FOUND)
+                .timestamp(now().toString())
+                .stacktrace(ExceptionUtils.getStackTrace(employeeNotFoundException))
+                .build();
+    }
+
+    @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(IdIsNullException.class)
     public ErrorResponseDto handleIdIsNullException(IdIsNullException idIsNullException) {
         return ErrorResponseDto.builder()
@@ -155,7 +191,7 @@ public class ControllerAdvisor {
                 .stacktrace(ExceptionUtils.getStackTrace(infoNotFoundException))
                 .build();
     }
-    
+
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(StudentLessonNotFoundException.class)
     public ErrorResponseDto handleStudentLessonNotFoundException(StudentLessonNotFoundException studentLessonNotFoundException) {

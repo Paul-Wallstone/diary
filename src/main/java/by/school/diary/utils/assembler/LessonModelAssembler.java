@@ -23,7 +23,7 @@ public class LessonModelAssembler implements RepresentationModelAssembler<Lesson
     public EntityModel<LessonDto> toModel(LessonDto entity) {
         return EntityModel.of(entity,
                 linkTo(methodOn(LessonController.class).getById(entity.getId())).withRel("lesson"),
-                linkTo(methodOn(LessonController.class).getAll()).withRel("lessons"),
+                linkTo(methodOn(LessonController.class).all()).withRel("lessons"),
                 linkTo(methodOn(LessonController.class).deleteById(entity.getId())).withRel("delete"),
                 linkTo(methodOn(LessonController.class).save(entity)).withRel("save"),
                 linkTo(methodOn(LessonController.class).update(entity.getId(), entity)).withRel("update"));
@@ -38,6 +38,6 @@ public class LessonModelAssembler implements RepresentationModelAssembler<Lesson
         List<EntityModel<LessonDto>> lessoModels = responseDtos.stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());
-        return CollectionModel.of(lessoModels, linkTo(methodOn(LessonController.class).getAll()).withSelfRel());
+        return CollectionModel.of(lessoModels, linkTo(methodOn(LessonController.class).all()).withSelfRel());
     }
 }

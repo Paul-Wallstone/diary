@@ -37,11 +37,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAll() {
+    public List<UserDto> all() {
         List<UserEntity> userEntities = StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
         return userEntities.stream().map(user -> modelMapper.toDto(user)).collect(Collectors.toList());
     }
-
 
     @Override
     public UserDto update(UserDto dto) {
@@ -65,9 +64,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteById(Long id) {
-        if (userRepository.existsById(id)) {
+        try {
             userRepository.deleteById(id);
-        } else {
+        } catch (Exception e) {
             throw new UserNotFoundException(id);
         }
     }

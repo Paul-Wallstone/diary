@@ -6,7 +6,7 @@ import java.util.List;
 public interface CRUDService<T, R> {
     T getById(Long id);
 
-    List<T> getAll();
+    List<T> all();
 
     T save(R dto);
 

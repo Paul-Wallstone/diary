@@ -33,7 +33,7 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public List<ContactDto> getAll() {
+    public List<ContactDto> all() {
         Stream<ContactEntity> contactEntities = StreamSupport.stream(contactRepository.findAll().spliterator(), false);
         return contactEntities.map(contact -> modelMapper.toDto(contact)).collect(Collectors.toList());
     }

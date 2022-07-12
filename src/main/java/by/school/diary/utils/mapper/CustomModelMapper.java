@@ -1,20 +1,8 @@
 package by.school.diary.utils.mapper;
 
-import by.school.diary.dto.InfoDto;
-import by.school.diary.dto.LessonDto;
-import by.school.diary.dto.StudentDto;
-import by.school.diary.dto.StudentLessonDto;
-import by.school.diary.dto.ContactDto;
-import by.school.diary.dto.EmployeeDto;
+import by.school.diary.dto.*;
 import by.school.diary.dto.request.SignUpRequestDto;
-import by.school.diary.dto.UserDto;
-import by.school.diary.entity.InfoEntity;
-import by.school.diary.entity.LessonEntity;
-import by.school.diary.entity.StudentEntity;
-import by.school.diary.entity.StudentLessonEntity;
-import by.school.diary.entity.ContactEntity;
-import by.school.diary.entity.EmployeeEntity;
-import by.school.diary.entity.UserEntity;
+import by.school.diary.entity.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -119,6 +107,55 @@ public class CustomModelMapper {
     public EmployeeDto toDto(EmployeeEntity entity) {
         return Optional.ofNullable(entity).isPresent()
                 ? mapper.map(entity, EmployeeDto.class)
+                : null;
+    }
+
+    public GroupEntity toEntity(GroupDto dto) {
+        return Optional.ofNullable(dto).isPresent()
+                ? mapper.map(dto, GroupEntity.class)
+                : null;
+    }
+
+    public GroupDto toDto(GroupEntity entity) {
+        return Optional.ofNullable(entity).isPresent()
+                ? mapper.map(entity, GroupDto.class)
+                : null;
+    }
+
+    public PositionEntity toEntity(PositionDto dto) {
+        return Optional.ofNullable(dto).isPresent()
+                ? mapper.map(dto, PositionEntity.class)
+                : null;
+    }
+
+    public PositionDto toDto(PositionEntity entity) {
+        return Optional.ofNullable(entity).isPresent()
+                ? mapper.map(entity, PositionDto.class)
+                : null;
+    }
+
+    public InstitutionEntity toEntity(InstitutionDto dto) {
+        return Optional.ofNullable(dto).isPresent()
+                ? mapper.map(dto, InstitutionEntity.class)
+                : null;
+    }
+
+    public InstitutionDto toDto(InstitutionEntity entity) {
+        return Optional.ofNullable(entity).isPresent()
+                ? mapper.map(entity, InstitutionDto.class)
+                : null;
+    }
+
+
+    public SubjectEntity toEntity(SubjectDto dto) {
+        return Optional.ofNullable(dto).isPresent()
+                ? mapper.map(dto, SubjectEntity.class)
+                : null;
+    }
+
+    public SubjectDto toDto(SubjectEntity entity) {
+        return Optional.ofNullable(entity).isPresent()
+                ? mapper.map(entity, SubjectDto.class)
                 : null;
     }
 }
