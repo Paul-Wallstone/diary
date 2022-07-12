@@ -5,8 +5,8 @@ import by.school.diary.domain.Role;
 import by.school.diary.domain.Sex;
 import by.school.diary.entity.*;
 import by.school.diary.repository.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,51 +21,23 @@ import java.util.List;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
 
-    UserRepository userRepository;
-    ContactRepository contactRepository;
-    GroupRepository groupRepository;
-    StudentLessonRepository studentLessonRepository;
-    StudentRepository studentRepository;
-    ParentRepository parentRepository;
-    PositionRepository positionRepository;
-    SubjectRepository subjectRepository;
-    PasswordEncoder encoder;
-    EmployeeRepository employeeRepository;
-    InfoRepository infoRepository;
-    InstitutionRepository institutionRepository;
-    LessonRepository lessonRepository;
+    private final UserRepository userRepository;
+    private final ContactRepository contactRepository;
+    private final GroupRepository groupRepository;
+    private final StudentLessonRepository studentLessonRepository;
+    private final StudentRepository studentRepository;
+    private final ParentRepository parentRepository;
+    private final PositionRepository positionRepository;
+    private final SubjectRepository subjectRepository;
+    private final PasswordEncoder encoder;
+    private final EmployeeRepository employeeRepository;
+    private final InfoRepository infoRepository;
+    private final InstitutionRepository institutionRepository;
+    private final LessonRepository lessonRepository;
 
-
-    @Autowired
-    public DataLoader(UserRepository userRepository,
-                      InstitutionRepository institutionRepository,
-                      ContactRepository contactRepository,
-                      GroupRepository groupRepository,
-                      StudentLessonRepository studentLessonRepository,
-                      StudentRepository studentRepository,
-                      ParentRepository parentRepository,
-                      PositionRepository positionRepository,
-                      SubjectRepository subjectRepository,
-                      PasswordEncoder encoder,
-                      EmployeeRepository employeeRepository,
-                      LessonRepository lessonRepository,
-                      InfoRepository infoRepository) {
-        this.userRepository = userRepository;
-        this.contactRepository = contactRepository;
-        this.groupRepository = groupRepository;
-        this.studentLessonRepository = studentLessonRepository;
-        this.studentRepository = studentRepository;
-        this.parentRepository = parentRepository;
-        this.positionRepository = positionRepository;
-        this.subjectRepository = subjectRepository;
-        this.encoder = encoder;
-        this.employeeRepository = employeeRepository;
-        this.infoRepository = infoRepository;
-        this.institutionRepository = institutionRepository;
-        this.lessonRepository = lessonRepository;
-    }
 
     @Transactional
     @Override
