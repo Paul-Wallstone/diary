@@ -27,7 +27,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -165,14 +164,12 @@ class EmployeeServiceImplTest {
     @Test
     void testDeleteNullFailed() {
         when(modelMapper.toEntity(any(EmployeeDto.class))).thenReturn(EMPLOYEE_ENTITY);
-        doThrow(EmployeeNotFoundException.class).when(employeeRepository).delete(EMPLOYEE_ENTITY);
         assertThrows(IdIsNullException.class, () -> employeeService.delete(null));
         verify(employeeRepository, never()).delete(any());
     }
 
     @Test
     void testDeleteNullWithMapperFailed() {
-        doThrow(EmployeeNotFoundException.class).when(employeeRepository).delete(EMPLOYEE_ENTITY);
         assertThrows(IdIsNullException.class, () -> employeeService.delete(null));
         verify(employeeRepository, never()).delete(any());
     }
